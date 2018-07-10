@@ -2,4 +2,4 @@
 Developer dashboard for Analytics based on JIRA report
 
 
-###WIP
+# Work in progress stay tuned
