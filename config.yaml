@@ -1,0 +1,10 @@
+--- 
+environment : production
+appname: developerdashboard
+charset: UTF-8
+template: template_toolkit
+engines:
+  session:
+    Simple:
+      cookie_name: dashboard.user
+      cookie_duration: '1 hours'
