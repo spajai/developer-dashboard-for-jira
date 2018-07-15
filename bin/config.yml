@@ -1,0 +1,21 @@
+--- 
+environment : production
+appname: developerdashboard
+charset: UTF-8
+engines: 
+  session: 
+    YAML: 
+      cookie_name: eshop.session
+      is_http_only: 1
+      is_secure: 1
+    JSON:
+        allow_blessed:   '1'
+        canonical:       '1'
+        convert_blessed: '1'
+        allow_nonref:    '1'
+layout: main
+port: 6776
+template: template_toolkit
+logger: file
+log_path : '/home/ubuntu/test_dancer/logs'
+log_file : 'Applog.log'
