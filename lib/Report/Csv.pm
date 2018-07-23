@@ -61,7 +61,7 @@ sub check_and_insert_or_update_tickets {
     my $sql  = $self->{_sql};
     my $log  = $self->{_log};
     my $util = $self->{_util};
-    my $res  = $db->prepare('SELECT 1 FROM tickets WHERE  ticket_id= ?')->execute($data->{ticket_id});
+    my $res  = $db->prepare('select 1 from tickets where  ticket_id= ?')->execute($data->{ticket_id});
     $res or ($log->logconfess("execution failed: " . $db->errstr()));
 
     foreach (qw/last_viewed created updated eta resolved/) {
@@ -82,8 +82,8 @@ sub check_and_insert_or_update_tickets {
       ? $sql->update('tickets', $data, { ticket_id => $data->{ticket_id} })
       : $sql->insert('tickets', $data);
     my $sth = $db->prepare($stmt);
-    $sth->execute(@bind) or ($log->logconfess("execution failed:" . $db->errstr()));
-    $log->info("tickets table has been updated successfully");
+    $sth->execute(@bind) or ($log->logconfess("Execution failed:" . $db->errstr()));
+    $log->info("Tickets table has been updated successfully");
     return;
 }
 
@@ -94,7 +94,7 @@ sub check_and_insert_or_update_user_tickets {
     my $log    = $self->{_log};
     my $dev    = '';
     my $update = 0;
-    my $sth    = $db->prepare("SELECT user_id FROM users");
+    my $sth    = $db->prepare("select user_id from users");
     $sth->execute();
     my @dev_list = @{ $db->selectcol_arrayref('select user_id from users') };
 
@@ -122,17 +122,17 @@ sub check_and_insert_or_update_user_tickets {
     my $record = {
         ticket_id => $data->{ticket_id},
         user_id   => $dev,
-        type      => $type[0],
+        type      => $data->{project} || $type[0],
     };
 
     my $res =
-      $db->prepare('SELECT 1 FROM user_tickets WHERE  ticket_id= ? and user_id = ?')->execute($data->{ticket_id}, $dev);
+      $db->prepare('select 1 from user_tickets where  ticket_id= ? and user_id = ?')->execute($data->{ticket_id}, $dev);
     if ($res == 1) {
         $log->debug("SKIPPED Ticket '$data->{ticket_id}' for user '$dev' already exists");
         return;
     }
 
-    my $ticket_query = $db->prepare('SELECT id,user_id,ticket_id FROM user_tickets WHERE ticket_id= ?');
+    my $ticket_query = $db->prepare('select id,user_id,ticket_id from user_tickets where ticket_id= ?');
     $ticket_query->execute($data->{ticket_id});
     my $dev_row = $ticket_query->fetchrow_hashref();
 

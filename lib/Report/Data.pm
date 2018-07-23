@@ -30,14 +30,14 @@ sub get_ticket_by_month {
     my $util = $self->{_util};
     my $logd = $self->{_logd};
     my $query = <<SQL;
-SELECT COUNT(*) as TOTAL, MONTH(created) as MONTH FROM tickets WHERE YEAR(created) = $year GROUP BY YEAR(created), MONTH(created)
+select count(*) as total, month(created) as month from tickets where year(created) = $year group by year(created), month(created)
 SQL
     my $data = {};
     my $sth = $db->prepare($query);
     $sth->execute;
     while(my $r = $sth->fetchrow_hashref()) {
-        $data->{$util->month_num_to_text($r->{MONTH})} = $r->{TOTAL};
-        $data->{YEAR} += $r->{TOTAL} || 0;
+        $data->{$util->month_num_to_text($r->{month})} = $r->{total};
+        $data->{year} += $r->{total} || 0;
     }
     return $data;  
 
@@ -48,7 +48,7 @@ sub get_ticket_count {
     my $user_id = shift || undef;
     my $db = $self->{_db};
     my $query = <<SQL;
-SELECT  COUNT(*) as count,u.name,ut.type,u.user_id FROM user_tickets as ut INNER JOIN users as u on ut.user_id = u.user_id  GROUP BY ut.type ,u.name,user_id order by u.name
+select  count(*) as count,u.name,ut.type,u.user_id from user_tickets as ut inner join users as u on ut.user_id = u.user_id  group by ut.type ,u.name,user_id order by u.name
 SQL
     my $data = {};
     my $sth = $db->prepare($query);
@@ -57,9 +57,9 @@ SQL
         if($user_id) {
             next unless ($r->{user_id} eq $user_id);
         }
-        $data->{uc($r->{name})}->{$r->{type}} = $r->{count};
-        $data->{uc($r->{name})}->{TOTAL} += $r->{count};
-        $data->{TOTAL} += $r->{count};
+        $data->{lc($r->{name})}->{$r->{type}} = $r->{count};
+        $data->{lc($r->{name})}->{total} += $r->{count};
+        $data->{total} += $r->{count};
     }
     return $data;
 
@@ -69,9 +69,9 @@ sub get_project_health {
     my $self = shift;
     my $team = shift || '';
     my $status = $self->{_conf}->{status_for_health_bar};
-    my $db = $self->{_db};
+
     my $query = $self->{_util}->get_join_query($team,$status);
-    my $total = $db->selectall_array($query) + 0;
+    my $total = $self->{_db}->selectall_array($query) + 0;
 
     return $self->get_health($total) || undef;
 }
@@ -83,14 +83,43 @@ sub get_health {
     my @state = qw(critical bad good);
     @map{@state} = @{$self->{_conf}->{health_bar_threshold}};
     foreach (@state) {
-        return uc($_) if ($total >= $map{$_});
+        return lc($_) if ($total >= $map{$_});
     }
     return;
 }
 
 
-sub get_data_for_horizontal_bar {
+# sub get_data_for_horizontal_bar {
+sub get_data_for_graph {
+    my $self = shift;
+    my $db = $self->{_db};
+    my $util = $self->{_util};
+    my $logd = $self->{_logd};
 
+    # my @type = $db->selectall_array('select distinct type from user_tickets');
+    my %data;
+    my @type = @{ $db->selectcol_arrayref('select distinct type from user_tickets') };
+    my @dev = @{ $db->selectcol_arrayref('select distinct name from users') };
+    my $query = "select count(ut.ticket_id) as count ,u.name ,ut.type from user_tickets as ut,users as u where type in (select DISTINCT(type) from user_tickets) and u.user_id = ut.user_id group by ut.user_id,type";
+
+    my $sth = $db->prepare($query);
+    $sth->execute;
+
+    @data{@type} = map {} , @type;
+    
+    foreach my $t (@type) {
+        foreach my $d (@dev) {
+            $data{$t}->{$d} = 0;
+        }
+    }
+
+    while(my $r = $sth->fetchrow_hashref()) {
+        
+        $data{$r->{type}}->{$r->{name}} += $r->{count};
+     }
+     return  \%data;
+
+  #select DISTINCT type from user_tickets
 
   # select count(ticket_id),user_id,type from user_tickets where type in (select DISTINCT(type) from user_tickets) group by user_id,type  
 
@@ -100,21 +129,18 @@ sub get_data_for_horizontal_bar {
 sub get_hidden_tickets {
     my $self = shift;
     my $id  = shift || 0;
-    my $db = $self->{_db};
-    my $sql = $self->{_sql};
-    my $log = $self->{_log};
-    my $logd = $self->{_logd};
-    my $util = $self->{_util};
+
     my $query = 'select id,ticket_id,hidden from hidden_tickets';
     $query .= " where ticket_id = '$id'" if($id);
     my $data = [];
-    my $sth = $db->prepare($query);
-    $sth->execute || $util->log_db_error($db->errstr());
+    my $sth = $self->{_db}->prepare($query);
+    $sth->execute || $self->{_util}->log_db_error($self->{_db}->errstr());
 
     while(my $r = $sth->fetchrow_hashref()) {
         push @$data,$r;
     }
-    return $data;  
+
+    return $data;
 
 }
 

@@ -53,6 +53,10 @@ post '/api/v1/admin/dev/add' => sub {
     return $dev->add_dev($data);
 };
 
+get '/view/dev/add' => sub {
+    template 'add_dev';
+};
+
 get '/admin/view/logstation' => sub {
     redirect '/';
 };
@@ -110,7 +114,7 @@ post '/upload' => sub {
 };
 
 get '/' => sub {
-    template 'login';
+    template 'dashboard';
 };
 
 get '/about' => sub {
@@ -172,7 +176,7 @@ post '/login' => sub {
     } else {
         if ($valid) {
             session user => $user_value;
-            $log->info("Sucessfully login for " . $user_value);
+            $log->info("'$user_value' logged in Successfully");
             my $path      = delete $temp->{path};
             my $path_info = delete $temp->{path_info};
             redirect $path || $path_info || '/';
@@ -194,19 +198,19 @@ get '/api/v1/widget/count' => sub {
 
 get '/api/v1/widget/hit-count' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json($util->hit('count'));
+    return encode_json($util->hit('counter'));
 };
 
 get '/api/v1/widget/health' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json { 'ERROR' => 'Team Name Missing in Query Param' } unless (params->{team});
-    return encode_json { 'STATUS' => $report->get_project_health(params->{team}) };
+    return encode_json { 'error' => 'Team Name Missing in Query Param' } unless (params->{team});
+    return encode_json { 'status' => $report->get_project_health(params->{team}) };
 };
 
 get '/api/v1/widget/health' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json { 'ERROR' => 'Team Name Missing in Query Param' } unless (params->{team});
-    return encode_json { 'STATUS' => $report->get_project_health(params->{team}) };
+    return encode_json { 'error' => 'Team Name Missing in Query Param' } unless (params->{team});
+    return encode_json { 'status' => $report->get_project_health(params->{team}) };
 };
 
 ###########################

@@ -48,12 +48,12 @@ sub hit {
     if ($type) {
         $type = lc($type);
         if ($type eq 'counter') {
-            my $total = $db->selectrow_array("SELECT count from counter");
-            return { 'COUNT' => $total };
+            my $total = $db->selectrow_array("select count from counter");
+            return { 'count' => $total };
         }
-        return { 'ERROR' => 'Not Valid param' } if (!$table->{$type});
-        my $total = $db->selectrow_array("SELECT count(*) from " . $table->{$type});
-        return { 'COUNT' => $total };
+        return { 'error' => 'Not Valid param' } if (!$table->{$type});
+        my $total = $db->selectrow_array("select count(*) from " . $table->{$type});
+        return { 'count' => $total };
     }
     $db->do('update counter set count = count + 1');
     return;
@@ -65,7 +65,7 @@ sub validate_credential {
     my $pass = shift || undef;
     my $db   = $self->{_db};
 
-    my ($user_db, $pass_db) = $db->selectrow_array("SELECT user_id,pass from dashboard_admin where user_id = '$user'");
+    my ($user_db, $pass_db) = $db->selectrow_array("select user_id,pass from dashboard_admin where user_id = '$user'");
     my $valid = Core->new->valid_pass($pass_db, $pass);
     return ($user_db, $valid);
 
@@ -91,18 +91,18 @@ sub month_num_to_text {
     my ($self, $month) = (@_);
 
     my $month_map = {
-        1  => 'JAN',
-        2  => 'FEB',
-        3  => 'MAR',
-        4  => 'APR',
-        5  => 'MAY',
-        6  => 'JUN',
-        7  => 'JUL',
-        8  => 'AUG',
-        9  => 'SEP',
-        10 => 'OCT',
-        12 => 'NOV',
-        12 => 'DEC',
+        1  => 'Jan',
+        2  => 'Feb',
+        3  => 'Mar',
+        4  => 'Apr',
+        5  => 'May',
+        6  => 'Jun',
+        7  => 'Jul',
+        8  => 'Aug',
+        9  => 'Sep',
+        10 => 'Oct',
+        12 => 'Nov',
+        12 => 'Dec',
     };
 
     return $month_map->{$month};
@@ -116,27 +116,27 @@ sub get_join_query {
     my $st = join(',', map { "'$_'" } @$status);
     my $tm = join(',', map { "'$_'" } @$team);
     return <<SQL;
-    select 
-        t.ticket_id,
-        u.name,
-        t.summary,
-        t.last_viewed,
-        t.updated,
-        t.eta
-    from
-        user_tickets ut
-            inner join
-        users u
-            on ut.user_id = u.user_id
-            inner join 
-        tickets t
-            on ut.ticket_id = t.ticket_id
-    where 
-            t.status in ($st)
-        and 
-            u.team in ($tm)
-        and 
-            t.ticket_id not in (select ticket_id from hidden_tickets where hidden = true)
+select 
+    t.ticket_id,
+    u.name,
+    t.summary,
+    t.last_viewed,
+    t.updated,
+    t.eta
+from
+    user_tickets ut
+        inner join
+    users u
+        on ut.user_id = u.user_id
+        inner join 
+    tickets t
+        on ut.ticket_id = t.ticket_id
+where 
+        t.status in ($st)
+    and 
+        u.team in ($tm)
+    and 
+        t.ticket_id not in (select ticket_id from hidden_tickets where hidden = true)
 SQL
 
 }

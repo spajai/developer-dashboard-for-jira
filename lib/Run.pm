@@ -35,7 +35,7 @@ sub process_report {
         my $res = chmod 0777, ($file);
         $file = $rep->rename_file($file);
         $rep->update_report_processor('processing');
-        my $id = $rep->get_inserted_id();    #return
+        my $id = $rep->get_inserted_id(); #return
         $log->info("Report id '$id' generated for file '$file'");
         my $csv = Report::Csv->new($file);
         $csv->process_csv_rows();

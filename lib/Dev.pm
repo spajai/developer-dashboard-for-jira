@@ -24,7 +24,7 @@ sub add_dev {
     my $db  = $self->{_db};
     my $sql = $self->{_sql};
     my $log = $self->{_log};
-    my $res = $db->prepare('SELECT 1 FROM users WHERE  user_id= ?')->execute($data->{user_id});
+    my $res = $db->prepare('select 1 from users where  user_id= ?')->execute($data->{user_id});
     if ($res == 1) {
         $log->warn("User already exist with user_id $data->{user_id}");
         return -1;

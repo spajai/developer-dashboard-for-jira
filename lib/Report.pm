@@ -81,7 +81,7 @@ sub update_report_processor {
                     make_path($finish_path, { chmod => 0744, }) unless (-d $finish_path);
                     move($data->{path}, $new_path);
                     $data->{path} = $new_path;
-                    $log->info("file move successfully new path '$new_path'");
+                    $log->info("File moved successfully new path '$new_path'");
                 };
                 if ($@) {
                     $log->fatal("System error while moving file $@");
@@ -99,11 +99,11 @@ sub update_report_processor {
     eval {
         $sth->execute(@bind);
         $self->{report_id} = $sth->{'mysql_insertid'} || undef;
-        $log->info("Report ID generated '$self->{report_id}' ") if ($self->{report_id});
+        $log->info("Report ID generated '$self->{report_id}'") if ($self->{report_id});
     };
     if ($@) {
-        $log->fatal("UNABLE TO PROCESS REPORT $@");
-        $log->error("UNABLE TO PROCESS REPORT $@");
+        $log->fatal("Unable to process report $@");
+        $log->error("Unable to process report $@");
         return 0;
     }
     $log->info("Report '$self->{report_id}' has been procesesed sucessfully") if ($self->{report_id});
@@ -115,13 +115,13 @@ sub get_inserted_id {
 }
 
 sub last_report {
-    return { 'LASTMODIFIED' =>
+    return { 'lastmodified' =>
           (shift->{_db}->selectrow_array("select max(last_modfied) from report_processor where status = 'finished'"))[0] || '' };
 }
 
 sub report_status {
-    return { 'STATUS' =>
-          (shift->{_db}->selectrow_array("SELECT upper(status) from report_processor where id = ?", undef, shift))[0] || undef };
+    return { 'status' =>
+          (shift->{_db}->selectrow_array("select upper(status) from report_processor where id = ?", undef, shift))[0] || undef };
 }
 
 1;

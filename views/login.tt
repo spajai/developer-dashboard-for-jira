@@ -1,23 +1,8 @@
-<!-- <html> -->
-  <!-- <head> -->
-    <!-- <title>Session and logging in</title> -->
-  <!-- </head> -->
-  <!-- <body> -->
-    <!-- <form action='/login' method='POST'> -->
-        <!-- User Name : <input type='text' name='user'/> -->
-        <!-- Password: <input type='password' name='pass' /> -->
- 
-        <!-- <input type='submit' value='Login' /> -->
-    <!-- </form> -->
-  <!-- </body> -->
-<!-- </html> -->
-
-
 <html>
 <title>Dashboard Admin Login Page</title>
 <head>
-<script src='/javascripts/jquery-3.3.1.js'></script>
-<script src='/javascripts/login.js'></script>
+<script src='/js/jquery-3.3.1.js'></script>
+<script src='/js/login.js'></script>
 <link rel='stylesheet' type='text/css' href='/css/login.css'  />
 </head>
 

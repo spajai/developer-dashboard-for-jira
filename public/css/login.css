@@ -49,8 +49,6 @@ body {
 }
 
 .background {
-  background: url('https://myrror.co/etc/419062774_1385132057.jpg'); 
-  background-size: cover;
   filter: blur(10px);
   height: 105%;
   position: relative;

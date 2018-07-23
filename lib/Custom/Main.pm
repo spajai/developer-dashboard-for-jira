@@ -35,7 +35,7 @@ sub get_report {
     my $db = $self->{_db};
     my $log = $self->{_log};
     my $sql = $self->{_sql};
-    my $id = $self->report_exists($util->today(),$team); #use this later
+    # my $id = $self->report_exists($util->today(),$team); #use this later
     my $data = $self->existing_report($util->today(),$tem->[0]);
 
     if ($data) {
@@ -52,26 +52,26 @@ sub get_report {
         my ($stmt,@bind) = $sql->insert('daily_reports',$data);
         my $sth = $db->prepare($stmt);
         $sth->execute(@bind);
+        # $data = $self->existing_report($util->today(),$tem->[0]);
         $data = $self->existing_report($util->today(),$tem->[0]);
+
         return  { 'metadata' => $data->{metadata}, 'generated' => $data->{created}, 'lastmodified' => $data->{last_modfied} , 'id' => $data->{id}}; 
     }
 
 }
 
-
 sub update_dsr {
     my ($self,$team,$date) = (@_);
     my $util = $self->{_util};
-    
-    my $type = ['fetch','update','pdf','genrate'];
-    my $db = $self->{_db};
-    my $log = $self->{_log};
+
+    # my $db = $self->{_db};
+    # my $log = $self->{_log};
     my $sql = $self->{_sql};
     # my $id = $self->report_exists($util->today(),$team); #use this later
     my $data = $self->existing_report($util->today(),$tem->[0]);
     #Return since data does not exists
-    return {'STATUS' => 'Error' ,'MESSAGGE' => 'No Data Available For ID'} unless($data);
-    
+    return {'status' => 'Error' ,'messagge' => 'No Data Available For ID'} unless($data);
+
     my ($stmt,@bind) = $sql->insert('daily_reports',$data);
 }
 

@@ -11,7 +11,4 @@
   <p class="output">Goto  <a href="[% home %]">HOME</a></p>
   <p class="output">Report <a href="mailto:SPAJAI@CPAN.ORG?Subject=Developer-Dashboard%20[Error-404]%20Reported">Click here to Report Bug/Issue/Incident</a></p>
 </div>
-
-
-
 </html>

@@ -31,16 +31,18 @@ sub new {
     # ---------------------------------------------------- #
     # dashboard root directory avoid last '/'
     # ---------------------------------------------------- #
-    $self->{home} = '/<dir>//<dir>';
+    $self->{home} = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira';
 
     # ---------------------------------------------------- #
     #
     # Log4Perl config file location
     # ---------------------------------------------------- #
-    $self->{db_logger}             = '/<dir>/<dir>/config/log4perl.conf';
-    $self->{db_logger_name}        = 'dashboardlog';
-    $self->{dashboard_logger}      = '/<dir>/<dir>/config/log4perl.conf';
-    $self->{dashboard_logger_name} = 'dblog';
+    $self->{db_logger}             = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/config/log4perl.conf';
+    $self->{db_logger_name}        = 'dblog';
+    $self->{dashboard_logger}      = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/config/log4perl.conf';
+    $self->{dashboard_logger_name} = 'dashboardlog';
+    $self->{report_logger}      = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/config/log4perl.conf';
+    $self->{report_logger_name} = 'reportlog';
 
     # ---------------------------------------------------- #
     # Jira tiket status to be displayed in dsr             #
@@ -57,10 +59,10 @@ sub new {
     # Upload and report directory config                   #
     # ---------------------------------------------------- #
     #path where file should be uploaded
-    $self->{upload_dir} = '/<dir>/<dir>/uploads';
+    $self->{upload_dir} = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/uploads';
 
     #path where finished files should be moved
-    $self->{finished_dir} = '/<dir>/<dir>/uploads/finished';
+    $self->{finished_dir} = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/uploads/finished';
 
     #threshold after which files to be deleted (old file)
     $self->{reports_cleanup_threshold} = "25";
@@ -75,6 +77,21 @@ sub new {
     $self->{to_email}   = ['email@domain.com'];
     $self->{cc_email}   = ['email@domain.com'];
 
+    # ---------------------------------------------------- #
+    # org name                                             #
+    # ---------------------------------------------------- #
+    $self->{org_name} = '';
+    $self->{org_bug_report_email} = [];
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     return bless($self, $class);
 }
 
