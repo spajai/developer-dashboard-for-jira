@@ -31,17 +31,19 @@ sub new {
     # ---------------------------------------------------- #
     # dashboard root directory avoid last '/'
     # ---------------------------------------------------- #
-    $self->{home} = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira';
+
+    $self->{home} = '/developer-dashboard-for-jira';
 
     # ---------------------------------------------------- #
     #
     # Log4Perl config file location
     # ---------------------------------------------------- #
-    $self->{db_logger}             = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/config/log4perl.conf';
+
+    $self->{db_logger}             = '/developer-dashboard-for-jira/config/log4perl.conf';
     $self->{db_logger_name}        = 'dblog';
-    $self->{dashboard_logger}      = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/config/log4perl.conf';
+    $self->{dashboard_logger}      = '/developer-dashboard-for-jira/config/log4perl.conf';
     $self->{dashboard_logger_name} = 'dashboardlog';
-    $self->{report_logger}      = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/config/log4perl.conf';
+    $self->{report_logger}      = '/developer-dashboard-for-jira/config/log4perl.conf';
     $self->{report_logger_name} = 'reportlog';
 
     # ---------------------------------------------------- #
@@ -59,10 +61,11 @@ sub new {
     # Upload and report directory config                   #
     # ---------------------------------------------------- #
     #path where file should be uploaded
-    $self->{upload_dir} = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/uploads';
+
+    $self->{upload_dir} = '/developer-dashboard-for-jira/uploads';
 
     #path where finished files should be moved
-    $self->{finished_dir} = '/home/ubuntu/developer_dashboard-test/developer-dashboard-for-jira/uploads/finished';
+    $self->{finished_dir} = '/developer-dashboard-for-jira/uploads/finished';
 
     #threshold after which files to be deleted (old file)
     $self->{reports_cleanup_threshold} = "25";

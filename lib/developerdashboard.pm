@@ -26,12 +26,17 @@ my $temp = {};
 
 get '/api/v1/ticket/count' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json $report->get_ticket_count(params->{dev} || undef);
+    return to_json $report->get_ticket_count(params->{dev} || undef);
+};
+
+get '/api/v1/ticket/summary' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json $report->get_data_for_graph();
 };
 
 get '/api/v1/ticket/count-by-year' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json $report->get_ticket_by_month(params->{year} || undef);
+    return to_json $report->get_ticket_by_month(params->{year} || undef);
 };
 
 # get '/api/v1/ticket/hidden' => sub {
@@ -48,8 +53,8 @@ get '/api/v1/ticket/count-by-year' => sub {
 #   admin Api
 ##############################
 
-post '/api/v1/admin/dev/add' => sub {
-    my $data = decode_json(request->body);
+post '/api/v1/dev/add' => sub {
+    my $data = from_json(request->body);
     return $dev->add_dev($data);
 };
 
@@ -71,7 +76,7 @@ get '/api/v1/report/status' => sub {
 
 get '/api/v1/report/dashboard-modified' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json($report->last_report());
+    return to_json($report->last_report());
 };
 
 get '/api/v1/admin/report/restart-report-processor' => sub {
@@ -123,9 +128,9 @@ get '/about' => sub {
 
 hook before => sub {
     $util->hit;    #update counter
-    if (request->path =~ /(get-|ping)/) {
-        header('Content-Type' => 'application/json');
-    }
+#    if (request->path =~ /(get-|ping)/) {
+#        header('Content-Type' => 'application/json');
+#    }
 
     if (request->path =~ /(.*)admin(.*)/ && !session('user')) {
         $log->debug("path captured path:" . request->path);
@@ -142,12 +147,12 @@ hook before => sub {
 ##############################
 get '/api/v1/admin/ping' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json { reply => 'pong', success => 1 };
+    return to_json { reply => 'pong', success => 1 };
 };
 
 get '/api/v1/ping' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json { reply => 'pong', success => 1 };
+    return to_json { reply => 'pong', success => 1 };
 };
 
 get '/api/v1/websocket' => sub {
@@ -193,24 +198,24 @@ post '/login' => sub {
 
 get '/api/v1/widget/count' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json($util->hit(params->{type}) || {});
+    return to_json($util->hit(params->{type}) || {});
 };
 
 get '/api/v1/widget/hit-count' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json($util->hit('counter'));
+    return to_json($util->hit('counter'));
 };
 
 get '/api/v1/widget/health' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json { 'error' => 'Team Name Missing in Query Param' } unless (params->{team});
-    return encode_json { 'status' => $report->get_project_health(params->{team}) };
+    return to_json { 'error' => 'Team Name Missing in Query Param' } unless (params->{team});
+    return to_json { 'status' => $report->get_project_health(params->{team}) };
 };
 
 get '/api/v1/widget/health' => sub {
     header('Content-Type' => 'application/json');
-    return encode_json { 'error' => 'Team Name Missing in Query Param' } unless (params->{team});
-    return encode_json { 'status' => $report->get_project_health(params->{team}) };
+    return to_json { 'error' => 'Team Name Missing in Query Param' } unless (params->{team});
+    return to_json { 'status' => $report->get_project_health(params->{team}) };
 };
 
 ###########################
