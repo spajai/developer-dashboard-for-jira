@@ -5,7 +5,6 @@ logs/*
 *.log
 lib/Custom/*.pm
 lib/Config.pm
-test_Script/*
-test_Script/.*
+test_Script/
 uploads/finished/.*
 uploads/*.*
