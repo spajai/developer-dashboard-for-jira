@@ -2,34 +2,40 @@ package Report::Csv;
 
 use strict;
 use warnings;
-use File::FindLib 'lib';
 
+use File::FindLib 'lib';
+use File::FindLib 'cpanlib';
+use Parallel::ForkManager;
 use Parse::CSV;
 use SQL::Abstract;
-use Parallel::ForkManager;
+
 use DB;
 use JSON;
 use Core;
 use Utils;
 
+our $self = undef;
+
 sub new {
-    my $self = shift;
+    my $this = shift;
     my $file = shift;
     die "Unable to open file '$file' use fullpath" unless (-f $file);
     my $csv = Parse::CSV->new(
         file  => $file,
         names => 1,
     );
+    if(!$self) {
+        my $class = {
+            _csv  => $csv,
+            _sql  => SQL::Abstract->new(),
+            _db   => DB->new->connect_db(),
+            _log  => Core->new->dashboard_logger,
+            _util => Utils->new,
+        };
+        $self = bless($class, $this);
+   }
 
-    my $class = {
-        _csv  => $csv,
-        _sql  => SQL::Abstract->new(),
-        _db   => DB->new->connect_db(),
-        _log  => Core->new->dashboard_logger,
-        _util => Utils->new,
-    };
-
-    return bless($class, $self);
+   return $self;
 }
 
 sub process_csv_rows {
@@ -167,26 +173,7 @@ sub get_mapped_data {
     my ($self, $raw_data) = @_;
     my $data = {};
     $data->{metadata} = encode_json $raw_data;
-    my $csv_fileds_map = {
-        'Issue key'                        => 'ticket_id',
-        'Custom field (Expected Delivery)' => 'eta',
-        'Status'                           => 'status',
-        'Priority'                         => 'priority',
-        'Summary'                          => 'summary',
-        'Project key'                      => 'project',
-        'Issue id'                         => 'issue_id',
-        'Parent id'                        => 'parent_id',
-        'Issue Type'                       => 'issue_type',
-        'Resolution'                       => 'resolution',
-        'Assignee'                         => 'assignee',
-        'Reporter'                         => 'reporter',
-        'Creator'                          => 'creator',
-        'Updated'                          => 'updated',
-        'Last Viewed'                      => 'last_viewed',
-        'Resolved'                         => 'resolved',
-        'Labels'                           => 'labels',
-        'Created'                          => 'created',
-    };
+    my $csv_fileds_map = $self->{_util}->csv_db_field_map;
 
     foreach my $k (keys %$raw_data) {
         no warnings;

@@ -1,32 +1,6 @@
 <html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>[===H==] WELCOME TO DEVELOPER DASHBOARD [==H===]</title>
 <style type="text/css">
-<!--
-body {
-	background-color: #000000;
-	margin-left: 20px;
-	margin-top: 20px;
-	margin-right: 20px;
-	margin-bottom: 20px;
-}
-a:link {
-	color: #FF0000;
-	text-decoration: none;
-}
-a:visited {
-	text-decoration: none;
-	color: #FF0000;
-}
-a:hover {
-	text-decoration: none;
-	color: #FF0000;
-}
-a:active {
-	text-decoration: none;
-	color: #00FF00;
-}
--->
-</style>
 <script>
 // JavaScript Document<script type='text/javascript'>
             // <![CDATA[
@@ -361,7 +335,6 @@ font-family: 'comic sans ms', verdana, arial;
 color: #1400FF;
 </style> 
 <script type="text/javascript"> 
-<!-- Begin
 /*
  * Notes on hue
  *
@@ -598,24 +571,6 @@ TEXTAREA {
 
 
 </p>
-<!-- <table border="0" width="100%" id="table4"> -->
-	<!-- <tbody><tr> -->
-		<!-- <td><font color="#FFFFFF"> -->
-<!-- Developed Using : <marquee onmouseover="this.stop()" onmouseout="this.start()" scrollamount="4" direction="left" width="80%" align="center"><b><big><big><font color="WHITE" size="2">PERL <b><big><big><font color="green" size="2">| DANCER2 <b><big><big><font color="white" size="2">| MYSQL <b><big><big><font color="green" size="2">| TEMPLATE TOOLKIT <b><big><big><font color="white" size="2">| JAVASCRIPT <b><big><big><font color="BLUE" size="2">| JQUERY<b><big><big><font color="skyblue" size="2">| WEBSOCKETD<b><big><big><font color="pink" size="2">| CHART.JS<b><big><big><font color="purpel" size="2"> |<b><big><big><font color="orangesize=&quot;6&quot;">| UBUNTU <b><big><big><font color="pink" size="2">| LOTS OF CREATIVITY & HARD WORK :-) </font></big></big></b></font></big></big></b></font></big></big></b></font></big></big></b></font></big></big></b></font></big></big></b></font></big></big></b></font></big></big></b></font></big></big></b></font></big></big></b></marquee>   </font><p></p>   <center> </center></td> -->
-	<!-- </tr> -->
-<!-- </tbody></table><b> -->
-
-
-
-
-<!-- <p align="center"> -->
-<!-- <big><big><big style="font-family: DejaVu Sans;"><big><span style="color: red;"> -->
-<!-- <big style="font-weight: bold;"><big> -->
-		<!-- <font size="">!</font></big></big></span></big></big><big style="font-family: monospace;"><big><span style="color: red;"><big style="font-weight: bold;"><span style="color: rgb(51, 204, 0);"><font size="5">We  -->
-		<!-- Are the dev</font></span></big></span></big></big><big><big style="font-family: DejaVu Sans;"><big><span style="color: red;"><big style="font-weight: bold;"><font size="5">!</font></big></span></big></big></big><big style="font-family: monospace;"><big><span style="color: red;"><font size="2"><br>|sushrut|Durvesh</font></span></big></big></big></big></p><p align="center"> -->
-<!-- </p><center> -->
-
-
 
 <center> 
 <table border="0" width="100%" id="table1" height="31">

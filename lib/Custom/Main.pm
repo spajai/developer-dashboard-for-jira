@@ -3,6 +3,8 @@ package Custom::Main;
 use strict;
 use warnings;
 use File::FindLib 'lib';
+use File::FindLib 'cpanlib';
+
 use SQL::Abstract;
 use DB;
 use Core;

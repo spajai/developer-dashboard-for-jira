@@ -19,14 +19,10 @@
         <link href="/css/startmin.css" rel="stylesheet">
 
         <!-- Custom Fonts -->
-        <link href="../css/font-awesome.min.css" rel="stylesheet" type="text/css">
+        <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-        <![endif]-->
+        <link href="/css/confirm/jquery-confirm.css" rel="stylesheet" type="text/css">
+
     </head>
     <body>
 
@@ -107,19 +103,19 @@
                          <a href="#" class="active"><i class="fa fa-cogs" aria-hidden="true"></i>  Developer Options<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
                            <li>
-                               <a href="/api/admin/view/dev/add"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Developer</a>
+                               <a href="/view/admin/dev/add"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Developer</a>
                             </li>
                             <li>
-                                <a href="update_dev.html"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
+                                <a href="/view/admin/update_dev"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
                             </li>
                         </ul>
                                 <!-- /.nav-second-level -->
                     </li>
 					<li>
-						<a href="DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
+						<a href="/DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
 					</li>
 					<li>
-						<a href="DSR.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>
+						<a href="/about.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>
 					</li>
                 </ul>
 
@@ -139,34 +135,39 @@
                         <div class="row">
                             <div class="col-lg-6">
                                 <form role="form" class="needs-validation" id="addDev">
-							        <div class="form-group">
+                                    <div class="form-group">
                                         <label>JIRA USER ID</label>
-                                        <input type="text" class="form-control" id="userId" placeholder="JIRA USER ID (Case Sensitive)"  value = "" required>
-                                    </div>		
-									<div class="form-group"><div class="form-group">
-									    <label for="name">Full Name</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Full Name" required>
-									</div>									
-									<div class="form-group">
+                                        <input type="text" class="form-control" id="userId" placeholder="JIRA USER ID (Case Sensitive)"  value = "" name="uid">
+                                     </div>		
+				     <div class="form-group"><div class="form-group">
+		                        <label for="name">Full Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Full Name" name="name">
+				     </div>									
+				     <div class="form-group">
                                         <label for="name">SELECT TEAM</label>
-										<span><select class="form-control" id="teamId" data-live-search="true" required> </span>
-										<option data-tokens="main" value="main">MAINTAINACE</option>
-										<option data-tokens="comp" value="comp">COMPLIANCE</option>
-										</select>
+					    <span><select class="form-control" id="teamId" data-live-search="true" > </span>
+					        <option data-tokens="main" value="main">MAINTAINACE</option>
+					        <option data-tokens="comp" value="comp">COMPLIANCE</option>
+					    </select>
                                     </div>
-                                    <button class="btn btn-success" type="submit" id="submitData">Submit form</button>
-									<button class="btn btn-primary" type="reset">Reset</button>
-						        </form>
-						        </div>
-					        </div>
-				    </div>
+                                    <button class="btn btn-success" type="button" id="submitData">Create User</button>
+                                    <button class="btn btn-danger" type="reset">Delete User</button>
+                                    <button class="btn btn-warning" type="reset">Update User</button>
+                                    <button class="btn btn-info" type="reset">Reset</button>
+                                 </form>
+                                 <div class="row">
+                                     <div class="success"></div>
+                                 </div>
+		           </div>
+			</div>
+		</div>
 
                         <!-- /.col-lg-12 -->
-                    </div>
-                    <!-- /.row -->
-                </div>
-                <!-- /.container-fluid -->
             </div>
+                    <!-- /.row -->
+          </div>
+                <!-- /.container-fluid -->
+        </div>
             <!-- /#page-wrapper -->
 
         </div>
@@ -184,10 +185,29 @@
         <!-- Custom Theme JavaScript -->
         <script src="/js/startmin.js"></script>
 
+        <script src="/js/confirm/jquery-confirm.js"></script>
+
         <script>
 	    $(document).ready(function(){
-            // click on button submit
-                $("#addDev").submit(function(event) {
+                
+               // $("#addDev").validate({
+               //     rules: {
+               //         uid: {
+               //            required: true,
+               //            minlength: 4
+               //         },
+               //         name: {
+               //            required: true,
+               //         }
+               //     }
+               // });
+                
+                // if($("#name").val != ''){
+                //     $("#submitData").removeAttr('disabled');
+                // }
+                 
+                // click on button submit
+                $("#submitData").click(function(event) {
                  // send ajax
                     var formData = {
                         'name'   :$('#name').val(),
@@ -195,12 +215,12 @@
                         'user_id':$('#userId').val()
                     };
 
-                 console.log(formData);
+                    console.log(formData);
 
                     var sendData = JSON.stringify(formData);
 
                      $.ajax({
-                         url: '/api/v1/dev/add',
+                         url: '/api/v1/admin/dev/add',
                          type : "POST", 
                          dataType : 'json',
                          data : sendData,
@@ -209,28 +229,44 @@
 
                       console.log(data);
 
-                      if(data != 1 || data == -1) {
-                          if(data == -1) {
-                              // $('#name-group').addClass('has-error'); 
-                              // $('#name-group').append('<div class="help-block">' + data + '</div>');
-                              alert("User already exists");
-                          } else if (data == 0) {
-                                alert("server error");
+                      if(data.status != 1 || data.status == -1) {
+                         event.preventDefault();
+		             if(data.status == -1) {
+                                 $.alert({
+                                     title: 'Warning',
+                                     theme: 'supervan',
+                                     icon: 'fa fa-warning',
+                                     type: 'orange',
+                                     content: 'User already exists!',
+                                 });
+                                  $('.success').append('<div class="alert alert-warning">' + 'User already exists' + '</div>').fadeOut(5000);
+                              return false;
+                             } else if (data.status == 0) {
+                                 $.alert({
+                                     title: 'Error',
+                                     theme: 'supervan',
+                                     icon: 'fa fa-error',
+                                     type: 'red',
+                                     content: 'Server Error',
+                                 });
+                               $('.success').append('<div class="alert alert-error">' + 'Exception: Server Error' + '</div>').fadeOut(5000);
+                              return false;
                           }
                      } else {
-
-                         $('form').append('<div class="alert alert-success">' + data + '</div>');
-
-                          // usually after form submission, you'll want to redirect
-                         // window.location = '/thank-you'; // redirect a user to another page
-                         alert('User registered successfully'); // for now we'll just alert the user
+                                 $.alert({
+                                     title: 'Success',
+                                     theme: 'supervan',
+                                     icon: 'fa fa-success',
+                                     type: 'green',
+                                     content: 'User Registered Successfully',
+                                 });
+                          $('.success').append('<div class="alert alert-success">' + 'User Registered Successfully' + '</div>').fadeOut(5000);
 
                      }
-                     //event.preventDefault();
              });
            });
          });
-		
+	
 		</script>
 		
     </body>

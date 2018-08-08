@@ -2,11 +2,12 @@ package developerdashboard;
 use strict;
 use warnings;
 use File::FindLib 'lib';
+use File::FindLib 'cpanlib';
 
 use Dancer2;
 
+use Report;
 use Core;
-
 use Report;
 use Report::Data;
 use Dev;
@@ -39,26 +40,38 @@ get '/api/v1/ticket/count-by-year' => sub {
     return to_json $report->get_ticket_by_month(params->{year} || undef);
 };
 
-# get '/api/v1/ticket/hidden' => sub {
-# header('Content-Type' => 'application/json');
+get '/api/v1/ticket/hidden' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json $report->get_hidden_tickets(params->{id} || undef);
+};
 
-# };
+post '/api/v1/admin/ticket/set-hidden' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json { 'status' => $report->set_hidden_tickets(params->{id} || undef)};
+};
 
-# post '/api/v1/admin/ticket/set-hidden' => sub {
-# header('Content-Type' => 'application/json');
-
-# };
+##############################
+#   developer/users api
+#############################
+get '/api/v1/dev' => sub {
+    header('Content-Type' => 'application/json');
+    my @users = $util->get_users();
+    use Data::Dumper;
+    $log->info(Dumper \@users);
+    return to_json \@users;
+};
 
 ###############################
 #   admin Api
 ##############################
 
-post '/api/v1/dev/add' => sub {
+post '/api/v1/admin/dev/add' => sub {
+    header('Content-Type' => 'application/json');
     my $data = from_json(request->body);
-    return $dev->add_dev($data);
+    return to_json { status => $dev->add_dev($data) };
 };
 
-get '/view/dev/add' => sub {
+get '/view/admin/dev/add' => sub {
     template 'add_dev';
 };
 
@@ -82,7 +95,7 @@ get '/api/v1/report/dashboard-modified' => sub {
 get '/api/v1/admin/report/restart-report-processor' => sub {
     my $pid = fork();
     if (!$pid) {
-        Report->new->process_report();    #fork and forgot
+        Run->new->process_report();    #fork and forgot
     }
 };
 
@@ -93,6 +106,10 @@ get '/upload' => sub {
     template 'upload';
 };
 
+get '/view/admin/update_dev' => sub {
+    template 'update_dev'
+};
+
 post '/upload' => sub {
     my $data = request->upload('file');
     my $dir = path(config->{appdir}, 'uploads');
@@ -100,6 +117,7 @@ post '/upload' => sub {
     my $r = Report->new();
 
     my $path = path($dir, $r->generate_unique_name($data->basename));
+
     if (-e $path) {
         return "'$path' already exists";
     }
@@ -111,7 +129,7 @@ post '/upload' => sub {
 
     my $pid = fork();
     $log->info("PID $pid has been forked");
-    if (not $pid) {
+    if (! $pid) {
         Run->new->process_report();
     }
     return;
@@ -128,18 +146,12 @@ get '/about' => sub {
 
 hook before => sub {
     $util->hit;    #update counter
-#    if (request->path =~ /(get-|ping)/) {
-#        header('Content-Type' => 'application/json');
-#    }
-
     if (request->path =~ /(.*)admin(.*)/ && !session('user')) {
         $log->debug("path captured path:" . request->path);
         $temp->{path_info} = request->path_info;
         $temp->{path}      = request->path;
         forward '/login';
-
     }
-
 };
 
 ###############################
@@ -147,12 +159,12 @@ hook before => sub {
 ##############################
 get '/api/v1/admin/ping' => sub {
     header('Content-Type' => 'application/json');
-    return to_json { reply => 'pong', success => 1 };
+    return to_json { success => 1 };
 };
 
 get '/api/v1/ping' => sub {
     header('Content-Type' => 'application/json');
-    return to_json { reply => 'pong', success => 1 };
+    return to_json { success => 1 };
 };
 
 get '/api/v1/websocket' => sub {
@@ -218,11 +230,21 @@ get '/api/v1/widget/health' => sub {
     return to_json { 'status' => $report->get_project_health(params->{team}) };
 };
 
+
+##############################
+#   utils Api
+##############################
+
+get '/api/v1/util/query' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json  { query => $util->get_ticket_query() || '' };
+};
+
 ###########################
 #   Capture unknown
 ###########################
 any qr{.*} => sub {
-    template '404', { home => '/' };
+    template '404', { home => '/' , email => $util->get_org_email };
 };
 
 true;

@@ -2,19 +2,24 @@ package Utils;
 
 use strict;
 use warnings;
+
 use File::FindLib 'lib';
+use File::FindLib 'cpanlib';
 use DateTime;
 use DateTime::Format::Flexible;
+# use URL::Encode qw (url_encode);
+use URL::Encode;
 
 use Core;
 use DB;
-
+use Conf;
 sub new {
     return bless(
         {
             _db   => DB->new->connect_db(),
             _log  => Core->new->dashboard_logger,
             _logd => Core->new->db_logger,
+            _conf => Conf->new,
         },
         shift
     );
@@ -146,6 +151,33 @@ sub log_db_error {
     my $error = shift;
     $self->{_log}->fatal("DB ERROR execution failed: $error");
     $self->{_logd}->error("DB ERROR execution failed: $error");
+}
+
+sub get_org_email {
+    my $self  = shift;
+    return join (';', @{$self->{_conf}->{org_bug_report_email}});
+}
+
+sub get_ticket_query {
+    my $self = shift;
+    my @dev = $self->get_users();
+    my $dev_sting = join (',' , @dev);
+    my $custom =  $self->{_conf}->{custom_jira_jql};
+    my $query = 'assignee was in ('. $dev_sting.' ) or reporter was in ('.$dev_sting.') or creator was in ('.$dev_sting.')';
+    my $url = $self->{_conf}->{org_jira_url};
+use Data::Dumper;
+print Dumper ($dev_sting, $query);
+    return $url.URL::Encode::url_encode_utf8($custom.$query);
+    # return $url.url_encode($custom.$query);
+}
+
+sub get_users {
+    my $self = shift;
+
+    my $dev = $self->{_db}->selectcol_arrayref("select user_id,name from users", { Columns => [ 1, 2 ] }) || [];
+    my %dev_hash = @$dev;
+
+    return wantarray ? (sort keys %dev_hash) : \%dev_hash;
 }
 
 1;

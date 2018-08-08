@@ -2,11 +2,12 @@
 
 use strict;
 use warnings;
+use lib '/developer_dashboard/cpanlib';
+use lib '/developer_dashboard/lib';
 use File::FindLib 'lib';
-
+use File::FindLib 'cpanlib';
 # use this block if you don't need middleware, and only have a single target Dancer app to run here
 use developerdashboard;
-
 
 
 developerdashboard->to_app;

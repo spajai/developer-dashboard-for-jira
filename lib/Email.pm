@@ -2,10 +2,11 @@ package Email;
 
 use strict;
 use warnings;
+use File::FindLib 'cpanlib';
+use File::FindLib 'lib';
 
 require MIME::Lite;
 
-use File::FindLib 'lib';
 use Conf;
 
 sub new {

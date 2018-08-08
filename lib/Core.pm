@@ -3,6 +3,7 @@ use strict;
 use warnings;
 
 use File::FindLib 'lib';
+use File::FindLib 'cpanlib';
 
 use Parse::CSV;
 use Crypt::SaltedHash;

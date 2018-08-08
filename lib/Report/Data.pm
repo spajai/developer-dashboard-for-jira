@@ -3,6 +3,8 @@ package Report::Data;
 use strict;
 use warnings;
 use File::FindLib 'lib';
+use File::FindLib 'cpanlib';
+
 use SQL::Abstract;
 use DB;
 use JSON;
@@ -10,17 +12,24 @@ use Utils;
 use Conf;
 use Core;
 
+our $self = undef;
+
 sub new {
-    my $self = shift;
-    my $class = {
-        _db   => DB->new->connect_db(),
-        _util => Utils->new,
-        _conf => Conf->new,
-        _sql => SQL::Abstract->new(),
-        _log => Core->new->dashboard_logger,
-        _logd => Core->new->db_logger,
-    }; 
-    return bless($class, $self);
+    my $this = shift;
+
+    if(!$self) {
+        my $class = {
+            _db   => DB->new->connect_db(),
+            _util => Utils->new,
+            _conf => Conf->new,
+            _sql => SQL::Abstract->new(),
+            _log => Core->new->dashboard_logger,
+            _logd => Core->new->db_logger,
+        }; 
+        $self = bless($class, $this);
+   }
+
+   return $self;
 }
 
 sub get_ticket_by_month {
@@ -28,7 +37,6 @@ sub get_ticket_by_month {
     my $year = shift || 'YEAR(CURDATE())';
     my $db = $self->{_db};
     my $util = $self->{_util};
-    my $logd = $self->{_logd};
     my $query = <<SQL;
 select count(*) as total, month(created) as month from tickets where year(created) = $year group by year(created), month(created)
 SQL
@@ -39,7 +47,8 @@ SQL
         $data->{$util->month_num_to_text($r->{month})} = $r->{total};
         $data->{year} += $r->{total} || 0;
     }
-    return $data;  
+
+    return $data;
 
 }
 
@@ -114,7 +123,7 @@ sub get_data_for_graph {
     }
 
     while(my $r = $sth->fetchrow_hashref()) {
-        
+
         $data{$r->{type}}->{$r->{name}} += $r->{count};
      }
      return  \%data;

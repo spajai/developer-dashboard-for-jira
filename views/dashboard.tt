@@ -10,24 +10,24 @@
     <title>Marchex Internal Management Dashboard</title>
 
     <!-- Bootstrap Core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- MetisMenu CSS -->
-    <link href="css/metisMenu.min.css" rel="stylesheet">
+    <link href="/css/metisMenu.min.css" rel="stylesheet">
 
     <!-- Timeline CSS -->
-    <link href="css/timeline.css" rel="stylesheet">
+    <link href="/css/timeline.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="css/startmin.css" rel="stylesheet">
+    <link href="/css/startmin.css" rel="stylesheet">
 
     <!-- Morris Charts CSS -->
-    <link href="css/morris.css" rel="stylesheet">
+    <link href="/css/morris.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
-    <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	
-	<link href="../css/odometer/themes/odometer-theme-car.css" rel="stylesheet" type="text/css">
+	<link href="/css/odometer/themes/odometer-theme-car.css" rel="stylesheet" type="text/css">
 	<style>
 		.trustyou-progressbar{
 		width:200px;
@@ -66,45 +66,10 @@
         </button>
 
         <!-- Top Navigation: Right Menu -->
-        <ul class="nav navbar-right navbar-top-links">
-            <li class="dropdown navbar-inverse">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
-                e/a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
-
+                
+            <!--li><a href="#"><i class="fa fa-refresh pull-right text-muted small" style="font-size:24px;color:red"></i></a></li-->
+            <button style="font-size:24px; color:red"><i class="fa fa-refresh pull-right"></i></button>
+        
         <!-- Sidebar -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
@@ -127,10 +92,10 @@
                         <a href="#" class="active"><i class="fa fa-cogs" aria-hidden="true"></i>   Developer Options<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
                             <li>
-                                <a href="/api/admin/view/dev/add"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Developer</a>
+                                <a href="/view/admin/dev/add"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Developer</a>
                             </li>
                             <li>
-                                <a href="pages/update_dev.html"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
+                                <a href="/view/admin/update_dev"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
                             </li>
                         </ul>
                         <!-- /.nav-second-level -->
@@ -301,16 +266,16 @@
 	</div>
 
 <!-- jQuery -->
-<script src="js/jquery.min.js"></script>
+<script src="/js/jquery.min.js"></script>
 
 <!-- Bootstrap Core JavaScript -->
-<script src="js/bootstrap.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 
 <!-- Metis Menu Plugin JavaScript -->
-<script src="js/metisMenu.min.js"></script>
+<script src="/js/metisMenu.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="js/startmin.js"></script>
+<script src="/js/startmin.js"></script>
 
 <!-- Odometer theme -->
 <script src="../js/odometer/odometer.js"></script>
@@ -326,7 +291,7 @@
 		
 		$.get("/api/v1/widget/count?type=ticket", function(data, status) {
 			var ticket_count = document.getElementById('ticketCount');
-			ticket_count.innerHTML = data.TICKETCOUNT;
+			ticket_count.innerHTML = data.count;
 		});
 		
 		$.get("/api/v1/ticket/summary", function(data) {
