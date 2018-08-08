@@ -1,7 +1,7 @@
 config/.*
 config/log4perl.conf
 logs/.*
-logs/*
+logs/
 *.log
 lib/Custom/*.pm
 lib/Config.pm
