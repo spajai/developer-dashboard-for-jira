@@ -53,11 +53,9 @@ post '/api/v1/admin/ticket/set-hidden' => sub {
 ##############################
 #   developer/users api
 #############################
-get '/api/v1/dev' => sub {
+get '/api/v1/dev/list' => sub {
     header('Content-Type' => 'application/json');
     my @users = $util->get_users();
-    use Data::Dumper;
-    $log->info(Dumper \@users);
     return to_json \@users;
 };
 
