@@ -1,8 +1,11 @@
-config/*
+config/.*
+config/log4perl.conf
+logs/.*
 logs/*
-logs/*.*
 *.log
 lib/Custom/*.pm
-test_Script/
-uploads/finished/*
+lib/Config.pm
+test_Script/*
+test_Script/.*
+uploads/finished/.*
 uploads/*.*
