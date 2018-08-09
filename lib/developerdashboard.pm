@@ -53,10 +53,22 @@ post '/api/v1/admin/ticket/set-hidden' => sub {
 ##############################
 #   developer/users api
 #############################
+get '/api/v1/dev/list/id' => sub {
+    header('Content-Type' => 'application/json');
+    my @user_id = $util->get_users('id');
+    return to_json \@user_id;
+};
+
+get '/api/v1/dev/list/name' => sub {
+    header('Content-Type' => 'application/json');
+    my @user_names = $util->get_users('name');
+    return to_json \@user_names;
+};
+
 get '/api/v1/dev/list' => sub {
     header('Content-Type' => 'application/json');
-    my @users = $util->get_users();
-    return to_json \@users;
+    my $dev_list = $util->get_users();
+    return to_json $dev_list;
 };
 
 ###############################

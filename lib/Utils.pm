@@ -165,19 +165,21 @@ sub get_ticket_query {
     my $custom =  $self->{_conf}->{custom_jira_jql};
     my $query = 'assignee was in ('. $dev_sting.' ) or reporter was in ('.$dev_sting.') or creator was in ('.$dev_sting.')';
     my $url = $self->{_conf}->{org_jira_url};
-use Data::Dumper;
-print Dumper ($dev_sting, $query);
+
     return $url.URL::Encode::url_encode_utf8($custom.$query);
     # return $url.url_encode($custom.$query);
 }
 
 sub get_users {
     my $self = shift;
+    my $type = shift || 'name';
 
     my $dev = $self->{_db}->selectcol_arrayref("select user_id,name from users", { Columns => [ 1, 2 ] }) || [];
     my %dev_hash = @$dev;
 
-    return wantarray ? (sort keys %dev_hash) : \%dev_hash;
+    my @dev_list = (lc($type) eq 'id') ? (sort keys %dev_hash) : (sort values %dev_hash);
+
+    return wantarray ? @dev_list : \%dev_hash;
 }
 
 1;
