@@ -75,14 +75,26 @@ get '/api/v1/dev/list' => sub {
 #   admin Api
 ##############################
 
+get '/view/admin/dev/add' => sub {
+    template 'add_dev';
+};
+
 post '/api/v1/admin/dev/add' => sub {
     header('Content-Type' => 'application/json');
     my $data = from_json(request->body);
     return to_json { status => $dev->add_dev($data) };
 };
 
-get '/view/admin/dev/add' => sub {
-    template 'add_dev';
+put '/api/v1/admin/dev' => sub {
+    header('Content-Type' => 'application/json');
+    my $data = from_json(request->body);
+    return to_json { status => $dev->update_dev($data) };
+};
+
+del '/api/v1/admin/dev' => sub {
+    header('Content-Type' => 'application/json');
+    my $data = from_json(request->body);
+    return to_json { status => $dev->delete_dev($data) };
 };
 
 get '/admin/view/logstation' => sub {
