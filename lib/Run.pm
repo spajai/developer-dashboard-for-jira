@@ -33,14 +33,14 @@ sub process_report {
 
     foreach my $file (@name) {
         my $rep = Report->new();
-        my $res = chmod 0777, ($file);
+        chmod 0777, ($file);
         $file = $rep->rename_file($file);
         $rep->update_report_processor('processing');
         my $id = $rep->get_inserted_id(); #return
         $log->info("Report id '$id' generated for file '$file'");
         my $csv = Report::Csv->new($file);
-        $csv->process_csv_rows();
-        $rep->update_report_processor('finished');
+        my $res = $csv->process_csv_rows();
+        $rep->update_report_processor('finished' ,$res);
     }
 
     #Clean up old reports

@@ -24,7 +24,7 @@ sub new {
         file  => $file,
         names => 1,
     );
-    if(!$self) {
+    if (!$self) {
         my $class = {
             _csv  => $csv,
             _sql  => SQL::Abstract->new(),
@@ -33,9 +33,9 @@ sub new {
             _util => Utils->new,
         };
         $self = bless($class, $this);
-   }
+    }
 
-   return $self;
+    return $self;
 }
 
 sub process_csv_rows {
@@ -44,6 +44,10 @@ sub process_csv_rows {
     my $csv    = $self->{_csv};
     my $log    = $self->{_log};
     my $count  = 0;
+    my $result = {
+        'ticket'       => {},
+        'user_tickets' => {},
+    };
     while (my $row = $csv->fetch) {
         ++$count;
 
@@ -51,18 +55,20 @@ sub process_csv_rows {
         # $pm->start and next;  #fork and forgot
         my $data = $self->get_mapped_data($row);
         $data->{'status'} ||= 'UNKNOWN';
-        $self->check_and_insert_or_update_tickets($data);
-        $self->check_and_insert_or_update_user_tickets($data);
+        $self->check_and_insert_or_update_tickets($data, $result->{ticket});
+        $self->check_and_insert_or_update_user_tickets($data, $result->{user_tickets});
 
         # $pm->finish;
-
     }
+
+    $result->{total} = $count;
     $log->info("Proccessed Total: $count Rows");
-    return;
+
+    return $result;
 }
 
 sub check_and_insert_or_update_tickets {
-    my ($self, $data) = @_;
+    my ($self, $data, $result) = @_;
     my $db   = $self->{_db};
     my $sql  = $self->{_sql};
     my $log  = $self->{_log};
@@ -83,18 +89,26 @@ sub check_and_insert_or_update_tickets {
     }
 
     #update the info for now
-    my ($stmt, @bind) =
-        $res ne '0E0'
-      ? $sql->update('tickets', $data, { ticket_id => $data->{ticket_id} })
-      : $sql->insert('tickets', $data);
+    my ($stmt, @bind);
+    if ($res ne '0E0') {
+        ($stmt, @bind) = $sql->update('tickets', $data, { ticket_id => $data->{ticket_id} });
+        $result->{update}++;
+    } else {
+        ($stmt, @bind) = $sql->insert('tickets', $data);
+        $result->{insert}++;
+    }
     my $sth = $db->prepare($stmt);
-    $sth->execute(@bind) or ($log->logconfess("Execution failed:" . $db->errstr()));
+    eval { $sth->execute(@bind); } or do {
+        $result->{error}++;
+        $log->logconfess("Execution failed:" . $db->errstr());
+    };
+
     $log->info("Tickets table has been updated successfully");
     return;
 }
 
 sub check_and_insert_or_update_user_tickets {
-    my ($self, $data) = @_;
+    my ($self, $data, $result) = @_;
     my $db     = $self->{_db};
     my $sql    = $self->{_sql};
     my $log    = $self->{_log};
@@ -131,9 +145,9 @@ sub check_and_insert_or_update_user_tickets {
         type      => $data->{project} || $type[0],
     };
 
-    my $res =
-      $db->prepare('select 1 from user_tickets where  ticket_id= ? and user_id = ?')->execute($data->{ticket_id}, $dev);
+    my $res = $db->prepare('select 1 from user_tickets where  ticket_id= ? and user_id = ?')->execute($data->{ticket_id}, $dev);
     if ($res == 1) {
+        $result->{skipped}++;
         $log->debug("SKIPPED Ticket '$data->{ticket_id}' for user '$dev' already exists");
         return;
     }
@@ -152,17 +166,24 @@ sub check_and_insert_or_update_user_tickets {
             $log->info("UPDATED Ticket '$data->{ticket_id}' has been TRANSITIONED from '$dev_row->{user_id}' to '$dev' and updated in DB");
         }
     }
+    my ($stmt, @bind);
+
+    if ($update) {
+        ($stmt, @bind) = $sql->update('user_tickets', $record, { id => $dev_row->{id} });
+        $result->{update}++;
+    } else {
+        ($stmt, @bind) = $sql->insert('user_tickets', $record);
+        $result->{insert}++;
+    }
+    my $sth_ut = $db->prepare($stmt);
+
     eval {
-        my ($stmt, @bind) =
-            $update
-          ? $sql->update('user_tickets', $record, { id => $dev_row->{id} })
-          : $sql->insert('user_tickets', $record);
-        my $sth_ut = $db->prepare($stmt);
         $sth_ut->execute(@bind);
         $log->info("Ticket $data->{ticket_id} has been added for user '$dev'") if (!$update);
     };
 
     if ($@) {
+        $result->{error}++;
         $log->error("ERROR execution failed DB error:" . $db->errstr() . " \n SYSTEM capture: $@");
         return;
     }

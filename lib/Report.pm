@@ -5,6 +5,7 @@ use warnings;
 
 use File::FindLib 'lib';
 use File::FindLib 'cpanlib';
+use JSON;
 
 use Cwd qw(abs_path cwd);
 use File::Find;
@@ -12,6 +13,7 @@ use File::Copy;
 use File::Basename;
 use File::Path qw(make_path);
 use SQL::Abstract;
+
 use DB;
 use Core;
 use Conf;
@@ -62,7 +64,7 @@ sub rename_file {
 }
 
 sub update_report_processor {
-    my ($self, $status) = @_;
+    my ($self, $status, $result) = @_;
     my $db          = $self->{_db};
     my $upload_path = $self->{_up};
     my $finish_path = $self->{_fin} || $self->{_up} . '/finished';
@@ -72,6 +74,7 @@ sub update_report_processor {
         report_name => basename($self->{new_file}),
         path        => $self->{new_file},
         status      => lc($status),
+        result      => encode_json ( $result ? $result : {} ),
     };
     my ($stmt, @bind);
 

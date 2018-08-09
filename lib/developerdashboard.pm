@@ -234,13 +234,6 @@ get '/api/v1/widget/health' => sub {
     return to_json { 'status' => $report->get_project_health(params->{team}) };
 };
 
-get '/api/v1/widget/health' => sub {
-    header('Content-Type' => 'application/json');
-    return to_json { 'error' => 'Team Name Missing in Query Param' } unless (params->{team});
-    return to_json { 'status' => $report->get_project_health(params->{team}) };
-};
-
-
 ##############################
 #   utils Api
 ##############################

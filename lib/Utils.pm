@@ -154,8 +154,8 @@ sub log_db_error {
 }
 
 sub get_org_email {
-    my $self  = shift;
-    return join (';', @{$self->{_conf}->{org_bug_report_email}});
+    my $self = shift;
+    return (defined $self->{_conf}->{org_bug_report_email}) ? join (';', @{$self->{_conf}->{org_bug_report_email}}) : '';
 }
 
 sub get_ticket_query {
@@ -180,6 +180,10 @@ sub get_users {
     my @dev_list = (lc($type) eq 'id') ? (sort keys %dev_hash) : (sort values %dev_hash);
 
     return wantarray ? @dev_list : \%dev_hash;
+}
+
+sub csv_db_field_map {
+    return shift->{_conf}->{csv_db_field_map};
 }
 
 1;

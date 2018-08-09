@@ -22,8 +22,8 @@ sub new {
             _db   => DB->new->connect_db(),
             _util => Utils->new,
             _conf => Conf->new,
-            _sql => SQL::Abstract->new(),
-            _log => Core->new->dashboard_logger,
+            _sql  => SQL::Abstract->new(),
+            _log  => Core->new->dashboard_logger,
             _logd => Core->new->db_logger,
         }; 
         $self = bless($class, $this);
@@ -91,9 +91,14 @@ sub get_health {
     my %map;
     my @state = qw(critical bad good);
     @map{@state} = @{$self->{_conf}->{health_bar_threshold}};
+    my $res = {
+     'val' => int (($total/$map{'critical'}) * 100),
+    };
+
     foreach (@state) {
-        return lc($_) if ($total >= $map{$_});
+        return $res->{state} = lc($_) if ($total >= $map{$_});
     }
+
     return;
 }
 
@@ -109,7 +114,7 @@ sub get_data_for_graph {
     my %data;
     my @type = @{ $db->selectcol_arrayref('select distinct type from user_tickets') };
     my @dev = @{ $db->selectcol_arrayref('select distinct name from users') };
-    my $query = "select count(ut.ticket_id) as count ,u.name ,ut.type from user_tickets as ut,users as u where type in (select DISTINCT(type) from user_tickets) and u.user_id = ut.user_id group by ut.user_id,type";
+    my $query = "select count(ut.ticket_id) as count ,u.name ,ut.type from user_tickets as ut,users as u where type in (select distinct(type) from user_tickets) and u.user_id = ut.user_id group by ut.user_id,type";
 
     my $sth = $db->prepare($query);
     $sth->execute;
@@ -192,6 +197,10 @@ sub set_hidden_tickets {
     }
 
     return $res;
+}
+
+sub last_report {
+    return { 'lastmodified' => (shift->{_db}->selectrow_array("select max(last_modfied) from report_processor where status = 'finished'"))[0] || '' };
 }
 
 1;
