@@ -308,10 +308,11 @@
 	});
 
         function lastModified(data) {
-            document.getElementById().innerHTML = data;
+            document.getElementById('lastUpdatedOn').innerHTML = data.lastmodified;
         }
 	
 	function showHealth(data) {
+                console.log(data);
 	    var states = ['Poor','Average','Good'];
 		var dataState;
 		

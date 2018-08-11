@@ -150,10 +150,10 @@
 					        <option data-tokens="comp" value="comp">COMPLIANCE</option>
 					    </select>
                                     </div>
-                                    <button class="btn btn-success" type="button" id="submitData">Create User</button>
-                                    <button class="btn btn-danger" type="reset">Delete User</button>
-                                    <button class="btn btn-warning" type="reset">Update User</button>
-                                    <button class="btn btn-info" type="reset">Reset</button>
+                  <button class="button btn btn-success" data-url='/api/v1/admin/dev/add' data-info='{"type":"POST"}' type="button" id="submitData">Create User</button>
+                  <button class="button btn btn-danger" data-url='/api/v1/admin/dev' data-info='{"type":"DELETE"}' type="reset">Delete User</button>
+                  <button class="button btn btn-warning" data-url='/api/v1/admin/dev' data-info='{"type":"PUT"}' type="reset">Update User</button>
+                  <button class="btn btn-info" type="reset">Reset</button>
                                  </form>
                                  <div class="row">
                                      <div class="success"></div>
@@ -189,25 +189,8 @@
 
         <script>
 	    $(document).ready(function(){
-                
-               // $("#addDev").validate({
-               //     rules: {
-               //         uid: {
-               //            required: true,
-               //            minlength: 4
-               //         },
-               //         name: {
-               //            required: true,
-               //         }
-               //     }
-               // });
-                
-                // if($("#name").val != ''){
-                //     $("#submitData").removeAttr('disabled');
-                // }
-                 
                 // click on button submit
-                $("#submitData").click(function(event) {
+                $('.button').click(function(event) {
                  // send ajax
                     var formData = {
                         'name'   :$('#name').val(),
@@ -218,10 +201,13 @@
                     console.log(formData);
 
                     var sendData = JSON.stringify(formData);
+                    var type = $(this).data('info').type;
+                    console.log(type);
 
                      $.ajax({
-                         url: '/api/v1/admin/dev/add',
-                         type : "POST", 
+                         //url: '/api/v1/admin/dev/add',
+                         url:  $(this).data('url'),
+                         type : $(this).data('info').type,
                          dataType : 'json',
                          data : sendData,
                          encode : true
@@ -239,7 +225,15 @@
                                      type: 'orange',
                                      content: 'User already exists!',
                                  });
-                                  $('.success').append('<div class="alert alert-warning">' + 'User already exists' + '</div>').fadeOut(5000);
+                                 if(type === 'POST') {
+                                     $('.success').append('<div class="alert alert-warning">' + 'User already exists' + '</div>').fadeOut(5000);
+                                 }
+                                 else if(type === 'PUT') {
+                                     $('.success').append('<div class="alert alert-warning">' + 'User does not exists' + '</div>').fadeOut(5000);
+                                 }
+                                 else {
+                                     $('.success').append('<div class="alert alert-warning">' + 'User does not exists' + '</div>').fadeOut(5000);
+                                 }
                               return false;
                              } else if (data.status == 0) {
                                  $.alert({
@@ -258,9 +252,17 @@
                                      theme: 'supervan',
                                      icon: 'fa fa-success',
                                      type: 'green',
-                                     content: 'User Registered Successfully',
+                                     content: 'Request Completed Successfully',
                                  });
-                          $('.success').append('<div class="alert alert-success">' + 'User Registered Successfully' + '</div>').fadeOut(5000);
+                                 if(type === 'POST') {
+                                     $('.success').append('<div class="alert alert-success">' + 'User Registered Successfully' + '</div>').fadeOut(5000);
+                                 }
+                                 else if(type === 'PUT') {
+                                     $('.success').append('<div class="alert alert-success">' + 'User Updated Successfully' + '</div>').fadeOut(5000);
+                                 }
+                                 else {
+                                     $('.success').append('<div class="alert alert-success">' + 'User Deleted Successfully' + '</div>').fadeOut(5000);
+                                 }
 
                      }
              });
