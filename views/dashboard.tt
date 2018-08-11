@@ -27,7 +27,10 @@
     <!-- Custom Fonts -->
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	
-	<link href="/css/odometer/themes/odometer-theme-car.css" rel="stylesheet" type="text/css">
+    <link href="/css/odometer/themes/odometer-theme-car.css" rel="stylesheet" type="text/css">
+   
+    <link href="/css/confirm/jquery-confirm.css" rel="stylesheet" type="text/css">
+
 	<style>
 		.trustyou-progressbar{
 		width:100%;
@@ -70,7 +73,7 @@
             <!--li><a href="#"><i class="fa fa-refresh pull-right text-muted small" style="font-size:24px;color:red"></i></a></li-->
             <li class="dropdown navbar-inverse">
                 <!--button style="color:red; border-radius: 50%" title="Restart Report Processor"> <i class="fa fa-power-off"></i></button-->
-                <button  style="color:red; border-radius: 50%" class="btn btn-default fa fa-power-off" title="Reboot Report Processor"></button>
+                <button  style="color:red; border-radius: 50%" class="btn btn-default fa fa-power-off refork" title="Reboot Report Processor"></button>
             </li>
              <li class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -302,6 +305,8 @@
 
 <script src="../js/Chartjs/Chart.js"></script>
 
+<script src="/js/confirm/jquery-confirm.js"></script>
+
 <script>
 
         // tooltip css
@@ -309,6 +314,60 @@
             selector: "[data-toggle=tooltip]",
             container: "body"
         });
+
+        // confirmation
+                    $('.refork').on('click', function () {
+                        $.confirm({
+                            title: 'Restart Report Processor',
+                            content: 'Click Proceed to continue or Cancel to exit',
+                            icon: 'fa fa-question-circle',
+                            animation: 'rotate',
+                            closeAnimation: 'rotate',
+                            theme: 'supervan',
+                            opacity: 0.5,
+                            buttons: {
+                                'confirm': {
+                                    text: 'Proceed',
+                                    btnClass: 'btn-blue',
+                                    action: function () {
+                                        $.confirm({
+                                            title: 'This maybe critical',
+                                            content: 'Continue if you are sure what you are doing',
+                                            icon: 'fa fa-warning',
+                                            animation: 'scale',
+                                            closeAnimation: 'zoom',
+                                            theme: 'supervan',
+                                            buttons: {
+                                                confirm: {
+                                                    text: 'Yes, sure!',
+                                                    btnClass: 'btn-orange',
+                                                    action: function () {
+                                                        $.get("/api/v1/admin/report/restart-report-processor", function(data, status){
+                                                        });  
+                                                        $.alert('Report Processor <strong>triggered!</strong>');
+                                                    }
+                                                },
+                                                cancel: function () {
+                                                    $.alert({
+                                                        title: 'Action',
+                                                        content: 'You canceled the action',
+                                                        theme: 'supervan',
+                                                    });
+                                                }
+                                            }
+                                        });
+                                    }
+                                },
+                                cancel: function () {
+                                    $.alert({
+                                        title: 'Action',
+                                        content: 'You canceled the action',
+                                        theme: 'supervan',
+                                    });    
+                                },
+                            }
+                        });
+                    });
 
 	$(document).ready(function() {
 		$.get("/api/v1/widget/hit-count", function(data, status){
