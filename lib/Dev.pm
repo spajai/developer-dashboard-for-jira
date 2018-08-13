@@ -41,6 +41,7 @@ sub add_dev {
         $self->{_log}->error("execution failed DB error:". $db->errstr()."\n SYSTEM capture: $@");
         return 0;
     }
+
     return 1;
 }
 
@@ -58,13 +59,14 @@ sub update_dev {
         $self->{_log}->info("User with user_id '$data->{user_id}' updated sucessfully data ". encode_json ($data));
         my $sth_ut = $db->prepare($stmt);
         $sth_ut->execute(@bind);
-        return 1;
     };
 
     if ($@) {
         $self->{_log}->error("execution failed DB error:".$db->errstr()."\n SYSTEM capture: $@");
         return 0;
     }
+
+    return 1;
 
 }
 
@@ -90,6 +92,7 @@ sub delete_dev {
         $log->error("execution failed DB error: ".$db->errstr()."\n SYSTEM capture: $@");
         return 0;
     }
+
     return 1;
 }
 
