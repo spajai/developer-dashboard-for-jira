@@ -31,7 +31,7 @@
             <!-- Navigation -->
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="/">Marchex</a>
+            <a class="navbar-brand" href="/">Your ORG NAME EDIT CONF TO CHANGE</a>
         </div>
 
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -186,90 +186,7 @@
         <script src="/js/startmin.js"></script>
 
         <script src="/js/confirm/jquery-confirm.js"></script>
-
-        <script>
-	    $(document).ready(function(){
-                // click on button submit
-                $('.button').click(function(event) {
-                 // send ajax
-                    var formData = {
-                        'name'   :$('#name').val(),
-                        'team'   :$('#teamId option:selected').val(),
-                        'user_id':$('#userId').val()
-                    };
-
-                    console.log(formData);
-
-                    var sendData = JSON.stringify(formData);
-                    var type = $(this).data('info').type;
-                    console.log(type);
-
-                     $.ajax({
-                         //url: '/api/v1/admin/dev/add',
-                         url:  $(this).data('url'),
-                         type : $(this).data('info').type,
-                         dataType : 'json',
-                         data : sendData,
-                         encode : true
-                     }).done(function(data) {
-
-                      console.log(data);
-
-                      if(data.status != 1 || data.status == -1) {
-                         event.preventDefault();
-		             if(data.status == -1) {
-                                 $.alert({
-                                     title: 'Warning',
-                                     theme: 'supervan',
-                                     icon: 'fa fa-warning',
-                                     type: 'orange',
-                                     content: 'User already exists!',
-                                 });
-                                 if(type === 'POST') {
-                                     $('.success').append('<div class="alert alert-warning">' + 'User already exists' + '</div>').fadeOut(5000);
-                                 }
-                                 else if(type === 'PUT') {
-                                     $('.success').append('<div class="alert alert-warning">' + 'User does not exists' + '</div>').fadeOut(5000);
-                                 }
-                                 else {
-                                     $('.success').append('<div class="alert alert-warning">' + 'User does not exists' + '</div>').fadeOut(5000);
-                                 }
-                              return false;
-                             } else if (data.status == 0) {
-                                 $.alert({
-                                     title: 'Error',
-                                     theme: 'supervan',
-                                     icon: 'fa fa-error',
-                                     type: 'red',
-                                     content: 'Server Error',
-                                 });
-                               $('.success').append('<div class="alert alert-error">' + 'Exception: Server Error' + '</div>').fadeOut(5000);
-                              return false;
-                          }
-                     } else {
-                                 $.alert({
-                                     title: 'Success',
-                                     theme: 'supervan',
-                                     icon: 'fa fa-success',
-                                     type: 'green',
-                                     content: 'Request Completed Successfully',
-                                 });
-                                 if(type === 'POST') {
-                                     $('.success').append('<div class="alert alert-success">' + 'User Registered Successfully' + '</div>').fadeOut(5000);
-                                 }
-                                 else if(type === 'PUT') {
-                                     $('.success').append('<div class="alert alert-success">' + 'User Updated Successfully' + '</div>').fadeOut(5000);
-                                 }
-                                 else {
-                                     $('.success').append('<div class="alert alert-success">' + 'User Deleted Successfully' + '</div>').fadeOut(5000);
-                                 }
-
-                     }
-             });
-           });
-         });
-	
-		</script>
+        <script src="/js/add-dev.js"></script>
 		
     </body>
 </html>
