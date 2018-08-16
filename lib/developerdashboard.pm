@@ -50,6 +50,14 @@ post '/api/v1/admin/ticket/set-hidden' => sub {
     return to_json { 'status' => $report->set_hidden_tickets(params->{id} || undef)};
 };
 
+#############################
+#   Trends api
+#############################
+
+get '/view/trends' => sub {
+    template 'trends';
+};
+
 ##############################
 #   developer/users api
 #############################
@@ -104,6 +112,10 @@ get '/admin/view/logstation' => sub {
 ###############################
 #   report Api
 ##############################
+get '/view/system_interface' => sub {
+    template 'system_interface';
+};
+
 get '/api/v1/report/status' => sub {
     header('Content-Type' => 'application/json');
 
