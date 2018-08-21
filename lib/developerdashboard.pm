@@ -50,6 +50,12 @@ post '/api/v1/admin/ticket/set-hidden' => sub {
     return to_json { 'status' => $report->set_hidden_tickets(params->{id} || undef)};
 };
 
+get '/api/v1/ticket/meta/:id?' => sub {
+    header('Content-Type' => 'application/json');
+    my $id = route_parameters->get('id') || undef;
+    return to_json $report->get_ticket_meta($id, params->{start} || undef);
+};
+
 #############################
 #   Trends api
 #############################
@@ -61,6 +67,7 @@ get '/view/trends' => sub {
 ##############################
 #   developer/users api
 #############################
+
 get '/api/v1/dev/list/id' => sub {
     header('Content-Type' => 'application/json');
     my @user_id = $util->get_users('id');

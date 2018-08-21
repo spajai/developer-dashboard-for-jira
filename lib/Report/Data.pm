@@ -107,8 +107,6 @@ sub get_health {
 sub get_data_for_graph {
     my $self = shift;
     my $db = $self->{_db};
-    my $util = $self->{_util};
-    my $logd = $self->{_logd};
 
     # my @type = $db->selectall_array('select distinct type from user_tickets');
     my %data;
@@ -165,9 +163,6 @@ sub set_hidden_tickets {
     $val = 1 if (!defined $val || $val ne '0');
     my $res = 0;
     my $db  = $self->{_db};
-    my $sql  = $self->{_sql};
-    my $log  = $self->{_log};
-    my $util = $self->{_util};
     my $exist = $self->get_hidden_tickets($id);
     my $stmt;
     my @bind;
@@ -177,11 +172,11 @@ sub set_hidden_tickets {
     };
 
     if (scalar @$exist > 0) {
-       ($stmt, @bind) = $sql->update('hidden_tickets',$data , {ticket_id => $id});
-        $log->info("Ticket $id being updated with hidden value $val");
+       ($stmt, @bind) = $self->{_sql}->update('hidden_tickets',$data , {ticket_id => $id});
+        $self->{_log}->info("Ticket $id being updated with hidden value $val");
     } else {
-        ($stmt, @bind) = $sql->insert('hidden_tickets',$data );
-        $log->info("Ticket $id being inserted with hidden value $val");
+        ($stmt, @bind) = $self->{_sql}->insert('hidden_tickets',$data );
+        $self->{_log}->info("Ticket $id being inserted with hidden value $val");
     }
 
     my $sth = $db->prepare($stmt);
@@ -192,8 +187,8 @@ sub set_hidden_tickets {
     };
 
     if ($@) {
-        $util->log_db_error($db->errstr());
-        $util->log_db_error($@);
+        $self->{_util}->log_db_error($db->errstr());
+        $self->{_util}->log_db_error($@);
     }
 
     return $res;
@@ -203,4 +198,31 @@ sub last_report {
     return { 'lastmodified' => (shift->{_db}->selectrow_array("select max(last_modfied) from report_processor where status = 'finished'"))[0] || '' };
 }
 
+
+
+sub get_ticket_meta {
+    my $self = shift;
+    my $id   = shift || undef;
+    my $offset = shift || 0;
+    my $res = {};
+    my $query  = "select metadata,id from tickets";
+
+    if(defined $id) {
+        $query .= " where ticket_id = '$id'"; #using since not dealing with sensitive data(no need to handle sql injection) 
+    } else {
+        $query .= " limit 100 offset $offset ";
+    }
+
+    print $query;
+
+    my $sth = $self->{_db}->prepare($query);
+    $sth->execute() || $self->{_util}->log_db_error($self->{_db}->errstr());
+
+    while(my $r = $sth->fetchrow_hashref()) {
+        $res->{$r->{id}} = $r->{metadata};
+    }
+
+    return $res;
+
+}
 1;
