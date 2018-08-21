@@ -7,7 +7,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Marchex Internal Management Dashboard</title>
+    <title>Developer Dashboard</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="/css/bootstrap.min.css" rel="stylesheet">
@@ -58,7 +58,7 @@
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
         <div class="navbar-header">
-            <a class="navbar-brand" href="dashboard.tt">Marchex</a>
+            <a class="navbar-brand" href="dashboard.tt">Organization Name</a>
         </div>
 
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -69,70 +69,41 @@
         </button>
 
         <!-- Top Navigation: Right Menu -->
-        <ul class="nav navbar-right navbar-top-links">        
-            <!--li><a href="#"><i class="fa fa-refresh pull-right text-muted small" style="font-size:24px;color:red"></i></a></li-->
-            <li class="dropdown navbar-inverse">
-                <!--button style="color:red; border-radius: 50%" title="Restart Report Processor"> <i class="fa fa-power-off"></i></button-->
-                <button  style="color:red; border-radius: 50%" class="btn btn-default fa fa-power-off refork" title="Reboot Report Processor"></button>
-            </li>
-             <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
         <!-- Sidebar -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
-
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                        </div>
-                    </li>
                     <li>
-                        <a href="/" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                        <a href="/" class="active"><i class="fa fa-dashboard fa-fw" aria-hidden="true"></i> Dashboard</a>
                     </li>
-					<li>
-                        <a href="#" class="active"><i class="fa fa-cogs" aria-hidden="true"></i>   Developer Options<span class="fa arrow"></span></a>
-						<ul class="nav nav-second-level">
-                            <li>
-                                <a href="/view/admin/dev/add"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Developer</a>
-                            </li>
-                            <li>
-                                <a href="/view/admin/update_dev"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
-                            </li>
-                        </ul>
+		    <li>
+                        <a href="#" class="active"><i class="fa fa-cogs" aria-hidden="true"></i>  Developer Options<span class="fa arrow"></span></a>
+			    <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="/view/admin/dev/add"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Developer</a>
+                                </li>
+                                <li>
+                                    <a href="/view/admin/update_dev"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
+                                </li>
+                            </ul>
                         <!-- /.nav-second-level -->
                     </li>
-					<li>
-						<a href="pages/DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
-					</li>
-					<li>
-						<a href="pages/reportBug.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>
-					</li>
-					<li>
-						<a href="About.html" ><i class="fa fa-user" aria-hidden="true"></i> About Us</a>
-					</li>
+                    <li>
+                        <a href="/view/system_interface" ><i class="fa fa-refresh" aria-hidden="true"></i> System Interface</a>
+                    </li>
+		    <li>
+		        <a href="pages/DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
+		    </li>
+		    <li>
+		        <a href="pages/reportBug.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>
+		    </li>
+		    <li>
+		        <a href="About.html" ><i class="fa fa-user" aria-hidden="true"></i> About Us</a>
+		    </li>
                 </ul>
-
             </div>
         </div>
+                   <!--div class="text-center minheight" style="color:white; position: fixed; bottom:0;" data-toggle="tooltip" data-placement="right" title="Site Wide Hits"-->                        <div id="odometer" class="odometer pull-center" style="color:white; position: fixed; bottom:0;"></div>
     </nav>
 
     <!-- Page Content -->
@@ -180,12 +151,11 @@
                                     </div>
                                     <div class="col-xs-9 text-right">
                                        <!-- <div class="huge">12</div> -->
-                                        <div>Deploy Checklist</div>
-										<span>Maintenance & Compliance</span>										
+                                        <div>Custom</div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="pages/Deployment_checklist.html">
+                            <a href="#">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -223,15 +193,15 @@
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-xs-3">
-                                        <i class="fa fa-shopping-cart fa-5x"></i>
+                                        <i class="fa fa-pie-chart fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                        <div class="huge">124</div>
-                                        <div>Something!</div>
+                                        <div class="huge"></div>
+                                        <div>Trends</div>
                                     </div>
                                 </div>
                             </div>
-                            <a href="#">
+                            <a href="view/trends">
                                 <div class="panel-footer">
                                     <span class="pull-left">View Details</span>
                                     <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -272,9 +242,7 @@
 
                                 <div class="row">
 		                    <div class="col-lg-12 col-sm-6 tooltip-class">
-                                        <span class="text-center minheight" style="color:white;" data-toggle="tooltip" data-placement="right" title="Site Hits">
-                                            <div id="odometer" class="odometer"></div></span>
-					<h6 class="text-center minheight pull-right" style="color:white;">Last Updated :
+					<h6 class="text-center minheight" style="color:white;">Last Updated :
                                         <strong><span id="lastUpdatedOn"></span></strong></h6>
 			            </div>
 				</div>
@@ -301,9 +269,9 @@
 <script src="/js/startmin.js"></script>
 
 <!-- Odometer theme -->
-<script src="../js/odometer/odometer.js"></script>
+<script src="/js/odometer/odometer.js"></script>
 
-<script src="../js/Chartjs/Chart.js"></script>
+<script src="/js/Chartjs/Chart.js"></script>
 
 <script src="/js/confirm/jquery-confirm.js"></script>
 
