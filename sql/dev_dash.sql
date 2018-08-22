@@ -140,3 +140,4 @@ create unique index counter_id_idx using btree on developer_dashboard.counter (i
 
 insert into developer_dashboard.counter (count) values (0);
 insert into developer_dashboard.users (user_id,name) values ('unknown-dev','Unknown');
+insert into developer_dashboard.dashboard_admin (user_id, name, pass) values('admin', 'Dashboard Admin', '{SSHA256}SKTsMmFzdssNMhV/r6eeEgrRQYAkdTW324Hka/8tNWNUAipf');
