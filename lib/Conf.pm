@@ -92,8 +92,34 @@ sub new {
 
     # $self->{custom_jira_jql} = 'labels = XXXX or ';
     # $self->{org_jira_url} = 'https://jira.<YOUR-ORG_NAME>.com/issues/?jql=';
+    
+    ######################################################
+    # Csv to db tickets table column  map 
+    # If you need new field add the csv maaping here 
+    # and insert new column in db keys are Case sensetive
+    ######################################################
+    $self->{csv_db_field_map} = {
+        'Issue key'                        => 'ticket_id',
+        'Custom field (Expected Delivery)' => 'eta',
+        'Status'                           => 'status',
+        'Priority'                         => 'priority',
+        'Summary'                          => 'summary',
+        'Project key'                      => 'project',
+        'Issue id'                         => 'issue_id',
+        'Parent id'                        => 'parent_id',
+        'Issue Type'                       => 'issue_type',
+        'Resolution'                       => 'resolution',
+        'Assignee'                         => 'assignee',
+        'Reporter'                         => 'reporter',
+        'Creator'                          => 'creator',
+        'Updated'                          => 'updated',
+        'Last Viewed'                      => 'last_viewed',
+        'Resolved'                         => 'resolved',
+        'Labels'                           => 'labels',
+        'Created'                          => 'created',
+    };
 
-    return bless($self, $class);
+    return bless($self, $class);   
 }
 
 1;
