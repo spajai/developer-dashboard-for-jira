@@ -119,7 +119,7 @@ get '/admin/view/logstation' => sub {
 ###############################
 #   report Api
 ##############################
-get '/view/system_interface' => sub {
+get '/view/admin/system_interface' => sub {
     template 'system_interface';
 };
 
