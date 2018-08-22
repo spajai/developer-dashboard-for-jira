@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
+
+<style>
+#sbm {
+  display: none;
+}
+</style>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,85 +28,42 @@
         <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 
         <link href="/css/confirm/jquery-confirm.css" rel="stylesheet" type="text/css">
+      
+        <!-- Odometer theme -->
+        <link href="/css/odometer/themes/odometer-theme-car.css" rel="stylesheet" type="text/css">
+        <script src="/js/odometer/odometer.js"></script>
 
     </head>
     <body>
-
         <div id="wrapper">
+        <!-- Navigation -->
+            <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">Organization Name</a>
+                </div>
 
-            <!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="/">Your ORG NAME EDIT CONF TO CHANGE</a>
-        </div>
-
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-        </button>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+ 
+                <ul class="nav navbar-right navbar-top-links">
+                </ul>
 
         <!-- Top Navigation: Right Menu -->
-        <ul class="nav navbar-right navbar-top-links">
-            <li class="dropdown navbar-inverse">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-alerts">
-                    <li>
-                        <a href="#">
-                            <div>
-                                <i class="fa fa-comment fa-fw"></i> New Comment
-                                <span class="pull-right text-muted small">4 minutes ago</span>
-                            </div>
-                        </a>
-                    </li>
-                    <li class="divider"></li>
-                    <li>
-                        <a class="text-center" href="#">
-                            <strong>See All Alerts</strong>
-                            <i class="fa fa-angle-right"></i>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-user fa-fw"></i> secondtruth <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu dropdown-user">
-                    <li><a href="#"><i class="fa fa-user fa-fw"></i> User Profile</a>
-                    </li>
-                    <li><a href="#"><i class="fa fa-gear fa-fw"></i> Settings</a>
-                    </li>
-                    <li class="divider"></li>
-                    <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
-                    </li>
-                </ul>
-            </li>
-        </ul>
 
         <!-- Sidebar -->
         <div class="navbar-default sidebar" role="navigation">
             <div class="sidebar-nav navbar-collapse">
 
                 <ul class="nav" id="side-menu">
-                    <li class="sidebar-search">
-                        <div class="input-group custom-search-form">
-                            <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-primary" type="button">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </span>
-                        </div>
-                    </li>
                     <li>
                         <a href="/" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                     </li>
 					<li>
-                         <a href="#" class="active"><i class="fa fa-cogs" aria-hidden="true"></i>  Developer Options<span class="fa arrow"></span></a>
+                        <a href="#" class="active"><i class="fa fa-cogs" aria-hidden="true"></i>  Developer Options<span class="fa arrow"></span></a>
 						<ul class="nav nav-second-level">
                            <li>
                                <a href="/view/admin/dev/add"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Developer</a>
@@ -109,18 +72,24 @@
                                 <a href="/view/admin/update_dev"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
                             </li>
                         </ul>
-                                <!-- /.nav-second-level -->
+                    <!-- /.nav-second-level -->
+                    </li>
+                    <li>
+                        <a href="/view/admin/system_interface" ><i class="fa fa-refresh" aria-hidden="true"></i> System Interface</a>
                     </li>
 					<li>
-						<a href="/DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
+						<a href="/pages/DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
 					</li>
 					<li>
-						<a href="/about.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>
+						<a href="/pages/reportBug.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>
 					</li>
+                    <li>
+                        <a href="About.html" ><i class="fa fa-user" aria-hidden="true"></i> About Us</a>
+                    </li>
                 </ul>
-
             </div>
         </div>
+        <div id="odometer" class="odometer pull-center" style="color:white; position: fixed; bottom:0;"></div>
     </nav>
 
             <!-- Page Content -->
@@ -134,30 +103,31 @@
 						<div class="panel-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <form role="form" class="needs-validation" id="addDev">
+                                <form role="form" id="addUser" data-toggle="validator">
                                     <div class="form-group">
-                                        <label>JIRA USER ID</label>
-                                        <input type="text" class="form-control" id="userId" placeholder="JIRA USER ID (Case Sensitive)"  value = "" name="uid">
+                                        <label for="userId" class="control-label">JIRA USER ID</label>
+                                            <input type="text" class="form-control" id="userId" placeholder="JIRA USER ID (Case Sensitive)" required>
                                      </div>		
 				     <div class="form-group"><div class="form-group">
 		                        <label for="name">Full Name</label>
-                                        <input type="text" class="form-control" id="name" placeholder="Full Name" name="name">
+                                            <input type="text" class="form-control" id="name" placeholder="Full Name"  required>
 				     </div>									
 				     <div class="form-group">
-                                        <label for="name">SELECT TEAM</label>
+                                        <label for="teamId">SELECT TEAM</label>
 					    <span><select class="form-control" id="teamId" data-live-search="true" > </span>
 					        <option data-tokens="main" value="main">MAINTAINACE</option>
 					        <option data-tokens="comp" value="comp">COMPLIANCE</option>
 					    </select>
                                     </div>
-                  <button class="button btn btn-success" data-url='/api/v1/admin/dev/add' data-info='{"type":"POST"}' type="button" id="submitData">Create User</button>
-                  <button class="button btn btn-danger" data-url='/api/v1/admin/dev' data-info='{"type":"DELETE"}' type="reset">Delete User</button>
-                  <button class="button btn btn-warning" data-url='/api/v1/admin/dev' data-info='{"type":"PUT"}' type="reset">Update User</button>
-                  <button class="btn btn-info" type="reset">Reset</button>
-                                 </form>
-                                 <div class="row">
-                                     <div class="success"></div>
-                                 </div>
+                                    <button class="button btn btn-success" data-url='/api/v1/admin/dev/add' data-info='{"type":"POST"}' type="button" id="submitData">Create User</button>
+                                    <button class="button btn btn-danger" data-url='/api/v1/admin/dev' data-info='{"type":"DELETE"}' type="button">Delete User</button>
+                                    <button class="button btn btn-warning" data-url='/api/v1/admin/dev' data-info='{"type":"PUT"}' type="button">Update User</button>
+                                    <button class="btn btn-info" type="reset">Reset</button>
+                                </form>
+                               
+                                <div class="row">
+                                    <div class="success"></div>
+                                </div>
 		           </div>
 			</div>
 		</div>
@@ -186,7 +156,106 @@
         <script src="/js/startmin.js"></script>
 
         <script src="/js/confirm/jquery-confirm.js"></script>
-        <script src="/js/add-dev.js"></script>
+
+        <script type="text/javascript" src="/js/validator/validator.js"></script>
+
+        <script>
+	    $(document).ready(function(){
+            $.get("/api/v1/widget/hit-count", function(data, status){
+                document.getElementById('odometer').innerHTML = data.count;
+            });
+
+                // click on button submit
+                $('.button').click(function(event) {
+                 // send ajax
+            $("#addUser").validate({
+                rules: {
+                  userId: "required",
+                  name: "name",
+                },
+                messages: {
+                  userId: "PLease enter userId",
+                  name: "name cannot be blank",
+                },
+            });
+                    var formData = {
+                        'name'   :$('#name').val(),
+                        'team'   :$('#teamId option:selected').val(),
+                        'user_id':$('#userId').val()
+                    };
+
+                    console.log(formData);
+
+                    var sendData = JSON.stringify(formData);
+                    var type = $(this).data('info').type;
+                    console.log(type);
+
+                     $.ajax({
+                         //url: '/api/v1/admin/dev/add',
+                         url:  $(this).data('url'),
+                         type : $(this).data('info').type,
+                         dataType : 'json',
+                         data : sendData,
+                         encode : true
+                     }).done(function(data) {
+
+                      console.log(data);
+
+                      if(data.status != 1 || data.status == -1) {
+                         event.preventDefault();
+		             if(data.status == -1) {
+                                 $.alert({
+                                     title: 'Warning',
+                                     theme: 'supervan',
+                                     icon: 'fa fa-warning',
+                                     type: 'orange',
+                                     content: 'User already exists!',
+                                 });
+                                 if(type === 'POST') {
+                                     $('.success').append('<div class="alert alert-warning">' + 'User already exists' + '</div>').fadeOut(5000);
+                                 }
+                                 else if(type === 'PUT') {
+                                     $('.success').append('<div class="alert alert-warning">' + 'User does not exists' + '</div>').fadeOut(5000);
+                                 }
+                                 else {
+                                     $('.success').append('<div class="alert alert-warning">' + 'User does not exists' + '</div>').fadeOut(5000);
+                                 }
+                              return false;
+                             } else if (data.status == 0) {
+                                 $.alert({
+                                     title: 'Error',
+                                     theme: 'supervan',
+                                     icon: 'fa fa-error',
+                                     type: 'red',
+                                     content: 'Server Error',
+                                 });
+                               $('.success').append('<div class="alert alert-error">' + 'Exception: Server Error' + '</div>').fadeOut(5000);
+                              return false;
+                          }
+                     } else {
+                                 $.alert({
+                                     title: 'Success',
+                                     theme: 'supervan',
+                                     icon: 'fa fa-success',
+                                     type: 'green',
+                                     content: 'Request Completed Successfully',
+                                 });
+                                 if(type === 'POST') {
+                                     $('.success').append('<div class="alert alert-success">' + 'User Registered Successfully' + '</div>').fadeOut(5000);
+                                 }
+                                 else if(type === 'PUT') {
+                                     $('.success').append('<div class="alert alert-success">' + 'User Updated Successfully' + '</div>').fadeOut(5000);
+                                 }
+                                 else {
+                                     $('.success').append('<div class="alert alert-success">' + 'User Deleted Successfully' + '</div>').fadeOut(5000);
+                                 }
+
+                     }
+             });
+           });
+         });
+	
+		</script>
 		
     </body>
 </html>
