@@ -1,6 +1,8 @@
 -- run using following command
 -- mysql -u <YOUR_USER_NAME> -p < sql/dev_dash.sql
 
+set sql_mode='STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION';
+
 create database developer_dashboard;
 
 create table if not exists developer_dashboard.tickets (

@@ -35,6 +35,11 @@ get '/api/v1/ticket/summary' => sub {
     return to_json $report->get_data_for_graph();
 };
 
+get '/api/v1/ticket/trends' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json $report->get_trend_data();
+};
+
 get '/api/v1/ticket/count-by-year' => sub {
     header('Content-Type' => 'application/json');
     return to_json $report->get_ticket_by_month(params->{year} || undef);
