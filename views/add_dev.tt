@@ -32,7 +32,7 @@
         <!-- Odometer theme -->
         <link href="/css/odometer/themes/odometer-theme-car.css" rel="stylesheet" type="text/css">
         <script src="/js/odometer/odometer.js"></script>
-
+        
     </head>
     <body>
         <div id="wrapper">
@@ -91,7 +91,6 @@
         </div>
         <div id="odometer" class="odometer pull-center" style="color:white; position: fixed; bottom:0;"></div>
     </nav>
-
             <!-- Page Content -->
             <div id="page-wrapper">
                 <div class="container-fluid">
@@ -103,26 +102,28 @@
 						<div class="panel-body">
                         <div class="row">
                             <div class="col-lg-6">
-                                <form role="form" id="addUser" data-toggle="validator">
+                                <form role="form" id="addUser">
                                     <div class="form-group">
                                         <label for="userId" class="control-label">JIRA USER ID</label>
-                                            <input type="text" class="form-control" id="userId" placeholder="JIRA USER ID (Case Sensitive)" required>
-                                     </div>		
-				     <div class="form-group"><div class="form-group">
-		                        <label for="name">Full Name</label>
-                                            <input type="text" class="form-control" id="name" placeholder="Full Name"  required>
-				     </div>									
-				     <div class="form-group">
+                                            <input type="text" class="form-control" id="userId" placeholder="JIRA USER ID (Case Sensitive)" required="required" type="text"><span id='uidReq'></span>
+                                    </div>		
+				                    <div class="form-group"><div class="form-group">
+		                                <label for="name">Full Name</label>
+                                            <input type="text" class="form-control" id="name" placeholder="Full Name"  required="required" type="text"><span id='nameReq'></span>
+				                    </div>
+				                    <div class="form-group">
                                         <label for="teamId">SELECT TEAM</label>
-					    <span><select class="form-control" id="teamId" data-live-search="true" > </span>
-					        <option data-tokens="main" value="main">MAINTAINACE</option>
-					        <option data-tokens="comp" value="comp">COMPLIANCE</option>
-					    </select>
+					                        <span><select class="form-control" id="teamId" data-live-search="true" required="required"> </span>
+					                            <option data-tokens="main" value="main">MAINTAINACE</option>
+					                            <option data-tokens="comp" value="comp">COMPLIANCE</option>
+					                        </select>
                                     </div>
+                                    <!--div class="col-lg-12 col-md-12"-->
                                     <button class="button btn btn-success" data-url='/api/v1/admin/dev/add' data-info='{"type":"POST"}' type="button" id="submitData">Create User</button>
                                     <button class="button btn btn-danger" data-url='/api/v1/admin/dev' data-info='{"type":"DELETE"}' type="button">Delete User</button>
                                     <button class="button btn btn-warning" data-url='/api/v1/admin/dev' data-info='{"type":"PUT"}' type="button">Update User</button>
                                     <button class="btn btn-info" type="reset">Reset</button>
+                                    <!--/div-->
                                 </form>
                                
                                 <div class="row">
@@ -144,7 +145,11 @@
         <!-- /#wrapper -->
 
         <!-- jQuery -->
+        <script src="/js/validator/multifield.js"></script>
+        <script src="/js/validator/validator.js"></script>
         <script src="/js/jquery.min.js"></script>
+        <script src="/js/validator/jquery.validate.min.js"></script>
+        <script src="/js/validator/additional-methods.min.js"></script>
 
         <!-- Bootstrap Core JavaScript -->
         <script src="/js/bootstrap.min.js"></script>
@@ -156,44 +161,65 @@
         <script src="/js/startmin.js"></script>
 
         <script src="/js/confirm/jquery-confirm.js"></script>
-
-        <script type="text/javascript" src="/js/validator/validator.js"></script>
-
+        
         <script>
 	    $(document).ready(function(){
             $.get("/api/v1/widget/hit-count", function(data, status){
                 document.getElementById('odometer').innerHTML = data.count;
             });
 
+            var validator = new FormValidator({"events" : ['blur', 'input', 'change']}, document.forms[0]);
+
+            // on form "submit" event
+            document.forms[0].onsubmit = function(e){
+                var submit = true,
+                validatorResult = validator.checkAll(this);
+
+                console.log(validatorResult);
+                return !!validatorResult.valid;
+            };
+
+            // on form "reset" event
+            document.forms[0].onreset = function(e){
+                validator.reset();
+            };
+
+            var form = $('#addUser');
+            form.validate();
+
                 // click on button submit
                 $('.button').click(function(event) {
-                 // send ajax
-            $("#addUser").validate({
-                rules: {
-                  userId: "required",
-                  name: "name",
-                },
-                messages: {
-                  userId: "PLease enter userId",
-                  name: "name cannot be blank",
-                },
-            });
+                    //alert(form.valid());
+                    if(form.valid()){
                     var formData = {
                         'name'   :$('#name').val(),
                         'team'   :$('#teamId option:selected').val(),
                         'user_id':$('#userId').val()
                     };
+/*
+                    if ($('#name').val() === '')
+                    {
+                        $('#uidReq').append('<div class="alert alert-warning">' + 'User Id Required' + '</div>') 
+                        return false;
+                    }
 
+                    if($('#userId option:selected').val() === '')
+                    {
+                        $('#nameReq').append('<div class="alert alert-warning">' + 'Name Required' + '</div>')
+                        return false;
+                    }
+*/
                     console.log(formData);
 
                     var sendData = JSON.stringify(formData);
                     var type = $(this).data('info').type;
-                    console.log(type);
+                    //console.log(type);
 
                      $.ajax({
                          //url: '/api/v1/admin/dev/add',
                          url:  $(this).data('url'),
                          type : $(this).data('info').type,
+                         //type:'POST',
                          dataType : 'json',
                          data : sendData,
                          encode : true
@@ -220,7 +246,7 @@
                                  else {
                                      $('.success').append('<div class="alert alert-warning">' + 'User does not exists' + '</div>').fadeOut(5000);
                                  }
-                              return false;
+                                 return false;
                              } else if (data.status == 0) {
                                  $.alert({
                                      title: 'Error',
@@ -252,9 +278,11 @@
 
                      }
              });
+             }
+             //alert("Required");
+             
            });
          });
-	
 		</script>
 		
     </body>
