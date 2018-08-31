@@ -64,7 +64,7 @@
                                 <!-- /.nav-second-level -->
                             </li>
 							<li>
-								<a href="DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
+								<a href="#" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
 							</li>
 							<li>
 						<a href="reportBug.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>

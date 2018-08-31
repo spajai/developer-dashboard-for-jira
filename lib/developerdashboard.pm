@@ -288,6 +288,10 @@ get 'custom/upload' => sub {
     template 'upload_1';
 };
 
+get '/view/custom' => sub {
+    template 'custom'
+};
+
 post 'custom/upload' => sub {
     header('Content-Type' => 'application/json');
     my $data = request->upload('file');
