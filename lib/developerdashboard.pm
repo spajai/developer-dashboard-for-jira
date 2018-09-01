@@ -92,6 +92,10 @@ get '/api/v1/dev/list' => sub {
     return to_json $dev_list;
 };
 
+get '/view/devtickets' => sub {
+    template 'dev-stats'
+};
+
 ###############################
 #   admin Api
 ##############################
