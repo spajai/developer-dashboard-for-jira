@@ -68,6 +68,9 @@
                                 <a href="/view/admin/system_interface" ><i class="fa fa-refresh" aria-hidden="true"></i> System Interface</a>
                             </li>
                             <li>
+                                <a href="/custom/upload" ><i class="fa fa-refresh" aria-hidden="true"></i> Custom Reports</a>
+                            </li>
+                            <li>
                                 <a href="#" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
                             </li>
                             <li>
@@ -132,7 +135,7 @@
                             </div>
 						</div>
 						<div class="row">
-                            <div class="col-lg-6">
+                            <!--div class="col-lg-6">
 							    <div class="panel panel-default">
 								    <div class="panel-heading">
 									    TimeStamp
@@ -141,7 +144,7 @@
 							            <canvas id="time_stamp" width="360"; height="185"></canvas>
 								    </div>
 								</div>
-                            </div>
+                            </div-->
 														
 							<div class="col-lg-6">
 							    <div class="panel panel-default">

@@ -122,8 +122,8 @@ del '/api/v1/admin/dev' => sub {
     return to_json { status => $dev->delete_dev($data) };
 };
 
-get '/admin/view/logstation' => sub {
-    redirect '/';
+get '/view/logstation' => sub {
+    template 'logarea';
 };
 
 ###############################

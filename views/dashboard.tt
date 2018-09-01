@@ -120,6 +120,11 @@
 			ticket_count.innerHTML = data.count;
 		});
 
+        $.get("/api/v1/widget/custom/count", function(data, status) {
+                    var custom_count = document.getElementById('custCount');
+                                custom_count.innerHTML = data.count;
+        });
+
         $.get("/api/v1/widget/count?type=dev", function(data, status) {
             var dev_count = document.getElementById('devCount');
             dev_count.innerHTML = data.count;
@@ -128,10 +133,10 @@
 		$.get("/api/v1/ticket/summary", function(data) {
 			getSummary(data);
 		});
-		
-		$.get("/api/v1/widget/health?team=main", function(data) {
-			showHealth(data);
-		});
+		var healthData = {"health":"80"};
+		//$.get("/api/v1/widget/health?team=main", function(data) {
+			showHealth(healthData);
+	//	});
 
                 $.get("/api/v1/report/dashboard-modified", function(data) {
                         lastModified(data);
@@ -141,18 +146,18 @@
         function lastModified(data) {
             document.getElementById('lastUpdatedOn').innerHTML = data.lastmodified;
         }
-	function showHealth(data) {
-                console.log(data);
+	function showHealth(healthData) {
+                console.log(healthData);
 	    var states = ['Poor','Average','Good'];
 		var dataState;
-		$('.ani-puan').css("width", data.health + "%");
-		if ((data.health > 0) && (data.health <= 40)) {
+		$('.ani-puan').css("width", healthData.health + "%");
+		if ((healthData.health > 0) && (healthData.health <= 40)) {
 		    dataState = states[0];
 			$('.ani-puan').css("background", "#ca2424");
-		} else if ((data.health >= 40) && (data.health < 75)) {
+		} else if ((healthData.health >= 40) && (healthData.health < 75)) {
 			dataState = states[1];
 			$('.ani-puan').css("background", "#d6d824");
-		} else if ((data.health >= 75)) {
+		} else if ((healthData.health >= 75)) {
 			dataState = states[2];
 			$('.ani-puan').css("background", "#9ad204");
 		}
@@ -160,25 +165,9 @@
 		
 	}
 	
-	function showHealth(data) {
-	    var states = ['Poor','Average','Good'];
-		var dataState;
-		
-		$('.ani-puan').css("width", data.health + "%");
-		if ((data.health > 0) && (data.health <= 40)) {
-		    dataState = states[0];
-			$('.ani-puan').css("background", "#ca2424");
-		} else if ((data.health >= 40) && (data.health < 75)) {
-			dataState = states[1];
-			$('.ani-puan').css("background", "#d6d824");
-		} else if ((data.health >= 75)) {
-			dataState = states[2];
-			$('.ani-puan').css("background", "#9ad204");
-		}
-		document.getElementById("health").innerHTML = dataState;
-		
-	}
 	
+
+		
 	var barOptions_stacked = {
 			tooltips: {
 				enabled: true
@@ -242,7 +231,7 @@
 			pointLabelFontFamily : "Quadon Extra Bold",
 			scaleFontFamily : "Quadon Extra Bold",
 		};
-
+		
 	
     function getSummary(result) {
 
@@ -262,6 +251,7 @@
 		'#58595b',
 		'#8549ba'
     ];
+	
 
 	
     for (var key in result) {
@@ -282,7 +272,7 @@
             set.data[data.labels.indexOf(label)] = result[key][label]
         }
         for (var i = 0; i < data.labels.length; i++)
-            set.data[i] = set.data[i] ? set.data[i] : 0;
+            set.data[i] = set.data[i] ? set.data[i] : 0;			
         data.datasets.push(set);
     }
 
@@ -356,11 +346,18 @@
                                 <li>
                                     <a href="/view/admin/update_dev"><i class="fa fa-upload" aria-hidden="true"></i> Update Developer Data</a>
                                 </li>
+                                <li>
+                                    <a href="/view/logstation"><i class="fa fa-upload" aria-hidden="true"></i> Server Logs</a>
+                                </li>
                             </ul>
                         <!-- /.nav-second-level -->
                     </li>
                     <li>
                         <a href="/view/admin/system_interface" ><i class="fa fa-refresh" aria-hidden="true"></i> System Interface</a>
+                    </li>
+
+                    <li>
+                        <a href="/custom/upload" ><i class="fa fa-area-chart" aria-hidden="true"></i> Custom Reports</a>
                     </li>
 		    <li>
 		        <a href="#" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
@@ -421,7 +418,7 @@
                                         <i class="fa  fa-server fa-5x"></i>
                                     </div>
                                     <div class="col-xs-9 text-right">
-                                       <!-- <div class="huge">12</div> -->
+                                       <div class="huge" id="custCount"></div>
                                         <div>Custom</div>
                                     </div>
                                 </div>

@@ -22,7 +22,7 @@ $(document).ready(function() {
              drawMonthChart(result);
              drawWeekChart(result);
              drawYearChart(result);
-             drawTsChart(result);
+//             drawTsChart(result);
          });
      }
     

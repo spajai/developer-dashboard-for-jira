@@ -60,7 +60,7 @@ sub hit {
         return { 'error' => 'Not Valid param' } if (!$table->{$type});
         #my $res = $db->selectrow_hashref("select count(*) as count from $table->{$type}");
         my ($res ) = $db->selectcol_arrayref("select count(*) as count from $table->{$type}", { Columns => [ 1] }) || [];
-        return { 'count' => $res->{count} };
+        return { 'count' => $res };
     }
     $db->do('update counter set count = count + 1');
     return;
