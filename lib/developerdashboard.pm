@@ -279,6 +279,47 @@ get '/api/v1/util/query' => sub {
     return to_json  { query => $util->get_ticket_query() || '' };
 };
 
+
+###############################
+#   Custom Api
+##############################
+get 'custom/upload' => sub {
+    template 'upload_1';
+};
+
+
+post 'custom/upload' => sub {
+    my $data = request->upload('file');
+    my $dir = path(config->{appdir}, 'custom_upload');
+    mkdir $dir if not -e $dir;
+    my $r = Report->new();
+    my $name = $r->generate_custom_name($data->basename);
+    my $path = path($dir, $name);
+
+    if (-e $path) {
+        return "'$path' already exists";
+    }
+
+    $log->info("New file has been uploaded $path");
+    $data->link_to($path);
+
+    my $res = chmod 0777, ($path);
+
+    # my $pid = fork();
+    # $log->info("PID $pid has been forked");
+    # if (! $pid) {
+        # Run->new->process_report();
+    # }
+    return $name;
+
+};
+
+
+
+
+
+
+
 ###########################
 #   Capture unknown
 ###########################

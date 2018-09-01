@@ -46,8 +46,18 @@ sub get_files_to_process {
 
 sub generate_unique_name {
     my ($self) = @_;
+
     my $rand = join('', map { ('a' .. 'z')[ rand(26) ] } 1 .. 7);
+
     return $self->{file_unique} = "uploaded_" . $rand . ".csv";
+}
+
+sub generate_custom_name {
+    my ($self) = @_;
+
+    my $rand = join('', map { ('a' .. 'z')[ rand(26) ] } 1 .. 4);
+
+    return $self->{file_unique} ='report_'.$rand;
 }
 
 sub rename_file {
