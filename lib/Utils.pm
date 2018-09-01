@@ -53,11 +53,13 @@ sub hit {
     if ($type) {
         $type = lc($type);
         if ($type eq 'counter') {
-            my ($total) = $db->selectrow_array("select count from counter");
+            #my ($total) = $db->selectrow_array("select count from counter");
+            my ($total) = $db->selectcol_arrayref("select count from counter", { Columns => [ 1] }) || [];
             return { 'count' => $total };
         }
         return { 'error' => 'Not Valid param' } if (!$table->{$type});
-        my $res = $db->selectrow_hashref("select count(*) as count from $table->{$type}");
+        #my $res = $db->selectrow_hashref("select count(*) as count from $table->{$type}");
+        my ($res ) = $db->selectcol_arrayref("select count(*) as count from $table->{$type}", { Columns => [ 1] }) || [];
         return { 'count' => $res->{count} };
     }
     $db->do('update counter set count = count + 1');
