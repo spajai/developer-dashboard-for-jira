@@ -315,8 +315,8 @@ post 'custom/upload' => sub {
     my $res = chmod 0777, ($path);
 
     $cust->process_custom_report();
-
-    return to_json {'name' => $name};
+    forward '/view/custom' , { name => $name};
+    # return to_json {'name' => $name};
 
 };
 
