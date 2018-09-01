@@ -289,6 +289,7 @@ get 'custom/upload' => sub {
 };
 
 post 'custom/upload' => sub {
+    header('Content-Type' => 'application/json');
     my $data = request->upload('file');
     my $dir = path(config->{appdir}, 'custom_upload');
     mkdir $dir if not -e $dir;
@@ -305,12 +306,9 @@ post 'custom/upload' => sub {
 
     my $res = chmod 0777, ($path);
 
-    # my $pid = fork();
-    # $log->info("PID $pid has been forked");
-    # if (! $pid) {
-        # Run->new->process_report();
-    # }
-    return $name;
+    $cust->process_custom_report();
+
+    return to_json {'name' => $name};
 
 };
 
@@ -319,7 +317,6 @@ get '/api/v1/ticket/custom/trends' => sub {
     return to_json { 'error' => 'Report Name Missing in Query Param' } unless (params->{name});
     return to_json $cust->get_trend_data(params->{name});
 };
-
 
 get '/api/v1/ticket/custom/reports' => sub {
     header('Content-Type' => 'application/json');

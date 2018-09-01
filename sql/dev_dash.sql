@@ -140,6 +140,17 @@ default charset=utf8
 collate=utf8_general_ci;
 create unique index counter_id_idx using btree on developer_dashboard.counter (id,count) ;
 
+create table if not exists developer_dashboard.custom_reports (
+    id int not null auto_increment,
+    name varchar(20) not null unique,
+    created timestamp default now() not null,
+    primary key (id)
+)
+engine=innodb
+default charset=utf8
+collate=utf8_general_ci;
+create unique index custom_reports_id_idx using btree on developer_dashboard.custom_reports (id,name);
+
 insert into developer_dashboard.counter (count) values (0);
 insert into developer_dashboard.users (user_id,name) values ('unknown-dev','Unknown');
 insert into developer_dashboard.dashboard_admin (user_id, name, pass) values('admin', 'Dashboard Admin', '{SSHA256}SKTsMmFzdssNMhV/r6eeEgrRQYAkdTW324Hka/8tNWNUAipf');

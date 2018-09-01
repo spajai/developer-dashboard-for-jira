@@ -5,6 +5,8 @@ use warnings;
 use File::FindLib 'lib';
 use File::FindLib 'cpanlib';
 use File::Basename;
+use File::Copy;
+use File::Path qw(make_path);
 
 use DateTime::Format::MySQL;
 use DateTime::Format::Flexible;
@@ -55,6 +57,11 @@ sub process_custom_report {
 
     foreach my $file (@name) {
         chmod 0777, ($file);
+
+        #triple HHH (triple sure)
+        `dos2unix $file`;
+        qx{dos2unix $file};
+
         my $tname = basename($file);
         $self->{table_name} = $tname;
         my $ok = 0;
@@ -87,7 +94,20 @@ sub process_custom_report {
             }
             $self->{_log}->info("Inserted $i records into table '$tname'");
         }
+        my $new_path = "$finished_dir"."/". basename($file);
+
+        eval {
+            make_path($finished_dir, { chmod => 0744, }) unless (-d $finished_dir);
+            move($file, $new_path );
+            $self->{_log}->info("File moved successfully new path '$new_path'");
+        };
+
+        if($@) {
+            $self->{_log}->error("File move error".$@);
+        }
+
     }
+    return;
 }
 
 sub check_and_insert_report {
@@ -196,29 +216,3 @@ engine=innodb
 default charset=utf8
 collate=utf8_general_ci;
 create unique index custom_reports_id_idx using btree on developer_dashboard.custom_reports (id,name);
-
-
-
-# sub get_ticket_meta {
-    # my $self   = shift;
-    # my $id     = shift || undef;
-    # my $offset = shift || 0;
-    # my $res    = {};
-    # my $query  = "select metadata,id from tickets";
-
-    # if (defined $id) {
-        # $query .=
-          # " where ticket_id = '$id'";    #using since not dealing with sensitive data(no need to handle sql injection)
-    # } else {
-        # $query .= " limit 100 offset $offset ";
-    # }
-
-    # my $sth = $self->{_db}->prepare($query);
-    # $sth->execute() || $self->{_util}->log_db_error($self->{_db}->errstr());
-    # while (my $r = $sth->fetchrow_hashref()) {
-        # $res->{ $r->{id} } = from_json($r->{metadata});
-    # }
-
-    # return $res;
-
-# }
