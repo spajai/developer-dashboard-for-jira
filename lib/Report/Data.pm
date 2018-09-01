@@ -68,8 +68,8 @@ SQL
         if ($user_id) {
             next unless ($r->{user_id} eq $user_id);
         }
-        $data->{ lc($r->{name}) }->{ $r->{type} } = $r->{count};
-        $data->{ lc($r->{name}) }->{total} += $r->{count};
+        $data->{ ($r->{name}) }->{ $r->{type} } = $r->{count};
+        $data->{ ($r->{name}) }->{total} += $r->{count};
         $data->{total} += $r->{count};
     }
     return $data;
