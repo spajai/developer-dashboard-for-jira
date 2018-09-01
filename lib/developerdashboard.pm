@@ -288,7 +288,7 @@ get '/api/v1/util/query' => sub {
 ###############################
 #   Custom Api
 ##############################
-get 'custom/upload' => sub {
+get '/custom/upload' => sub {
     template 'upload_1';
 };
 
@@ -296,7 +296,7 @@ get '/view/custom' => sub {
     template 'custom'
 };
 
-post 'custom/upload' => sub {
+post '/custom/upload' => sub {
     header('Content-Type' => 'application/json');
     my $data = request->upload('file');
     my $dir = path(config->{appdir}, 'custom_upload');
@@ -315,7 +315,7 @@ post 'custom/upload' => sub {
     my $res = chmod 0777, ($path);
 
     $cust->process_custom_report();
-    forward '/view/custom' , { name => $name};
+    redirect '/view/custom' , { 'name' => $name};
     # return to_json {'name' => $name};
 
 };
