@@ -1,21 +1,6 @@
-var pieData = {"Jan":89,"Apr":66,"Mar":97,"May":43,"Jul":184,"year":707,"Feb":61,"Jun":167};
-
-var day = [];
-var monthly = [];
-var Ts = [];
-var yearlyCount = [];
-var week = []
-
-var labelsDay = [];
-var labelsMonth = [];
-var TsType = [];
-var TsCount = [];
-var weeklyCount = [];
-var year = [];
-
 $(document).ready(function() {
 
-    var result;
+//    var result = '';
     var file = '';
 
     $('#getChart').click(function(event) {
@@ -47,6 +32,8 @@ $(document).ready(function() {
 });
 
 function drawMonthChart(result) {
+    var monthly = [];
+    var labelsMonth = [];
     var canvasMonthly = document.getElementById("monthly").getContext('2d');
     canvasMonthly.height = 185;     //IMP : set this for all canvas to fixed the height .
     var strJSON = JSON.stringify(result);
@@ -92,6 +79,8 @@ function drawMonthChart(result) {
 }
 
 function drawDayChart(result) {
+    var day = [];
+    var labelsDay = [];
     var canvasDay = document.getElementById("day").getContext('2d');
     canvasDay.height = 185;     //IMP : set this for all canvas to fixed the height .
     var strJSON = JSON.stringify(result);
@@ -132,6 +121,8 @@ function drawDayChart(result) {
 }
 
 function drawTsChart(result) {
+    var Ts = [];
+    var TsCount = [];
     var canvasTs = document.getElementById("time_stamp");
     canvasTs.height = 185;     //IMP : set this for all canvas to fixed the height .
     var strJSON = JSON.stringify(result);
@@ -189,6 +180,8 @@ function drawTsChart(result) {
 }
 
 function drawYearChart(result) {
+    var yearlyCount = [];
+    var year = [];
     var canvasYear = document.getElementById("year");
     canvasYear.height = 185;     //IMP : set this for all canvas to fixed the height .
     var strJSON = JSON.stringify(result);
@@ -241,6 +234,8 @@ function drawYearChart(result) {
 }
 
 function drawWeekChart(result) {
+    var week = [];
+    var weeklyCount = [];
     var canvasWeek = document.getElementById("week").getContext('2d');
     canvasWeek.height = 185;     //IMP : set this for all canvas to fixed the height .
     var strJSON = JSON.stringify(result);
