@@ -91,7 +91,7 @@ sub get_health {
     my $self = shift;
     my $total = shift || 0;
     my %map;
-    my @state = qw(critical bad good);
+    my @state = qw(good bad critical);
     @map{@state} = @{ $self->{_conf}->{health_bar_threshold} };
     my $res = { 'val' => int(($total / $map{'critical'}) * 100), };
 
