@@ -10,14 +10,15 @@ use Report;
 use Core;
 use Report;
 use Report::Data;
+use Custom::Report;
 use Dev;
 use Utils;
 use Run;
-
 my $log    = Core->new->dashboard_logger;
 my $report = Report::Data->new();
 my $dev    = Dev->new();
 my $util   = Utils->new();
+my $cust      = Custom::Report->new();
 
 my $temp = {};
 
@@ -89,10 +90,6 @@ get '/api/v1/dev/list' => sub {
     header('Content-Type' => 'application/json');
     my $dev_list = $util->get_users();
     return to_json $dev_list;
-};
-
-get '/view/devtickets' => sub {
-    template 'afour-dev'
 };
 
 ###############################
@@ -291,7 +288,6 @@ get 'custom/upload' => sub {
     template 'upload_1';
 };
 
-
 post 'custom/upload' => sub {
     my $data = request->upload('file');
     my $dir = path(config->{appdir}, 'custom_upload');
@@ -318,10 +314,22 @@ post 'custom/upload' => sub {
 
 };
 
+get '/api/v1/ticket/custom/trends' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json { 'error' => 'Report Name Missing in Query Param' } unless (params->{name});
+    return to_json $cust->get_trend_data(params->{name});
+};
 
 
+get '/api/v1/ticket/custom/reports' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json $cust->get_custom_reports();
+};
 
-
+get '/api/v1/widget/custom/count' => sub {
+    header('Content-Type' => 'application/json');
+    return to_json $cust->get_custom_report_count();
+};
 
 
 ###########################
