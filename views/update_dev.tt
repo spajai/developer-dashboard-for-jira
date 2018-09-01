@@ -112,11 +112,6 @@
                         <!--p>Site Hits:</p><span id="siteHits"></span-->
                         <div id="odometer" class="odometer"></div>
                     </div>
-                     <!-- Copyright -->
-                    <div class="footer-copyright text-center py-3"> © 2018 Copyright:
-                        <a href="#"> dev-dash.com</a>						
-                    </div>
-                     <!-- Copyright -->	
                 </div>
                </div>
                <!-- /.container-fluid -->

@@ -70,13 +70,13 @@
                                 <a href="/view/admin/system_interface" ><i class="fa fa-refresh" aria-hidden="true"></i> System Interface</a>
                             </li>
 							<li>
-								<a href="/pages/DSR.html" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
+								<a href="#" ><i class="fa fa-file-text" aria-hidden="true"></i> DSR</a>
 							</li>
 							<li>
 						        <a href="/pages/reportBug.html" ><i class="fa fa-bug" aria-hidden="true"></i> Report Bug</a>
 					        </li>
                             <li>
-                                <a href="About.html" ><i class="fa fa-user" aria-hidden="true"></i> About Us</a>
+                                <a href="/about" ><i class="fa fa-user" aria-hidden="true"></i> About Us</a>
                             </li>
                         </ul>
                     </div>
