@@ -1,0 +1,13 @@
+<html>
+<title>INTERNAL SERVER ERROR</title>
+<head> 
+<link rel='stylesheet' type='text/css' href='/css/error_page.css' />
+</head>
+<div class="overlay" ></div>
+<div class="terminal">
+  <h1>Error <span class="errorcode">500</span></h1>
+  <p class="output">INTERNAL SERVER ERROR</ü>
+  <p class="output">Please try <a href="/">HOME</a></p>
+  <p class="output">Report <a href="mailto:SPAJAI@CPAN.ORG?Subject=Developer-Dashboard%20[Error-500]%20Reported">Click here to Report Bug/Issue/Incident</a></p>
+</div>
+</html>

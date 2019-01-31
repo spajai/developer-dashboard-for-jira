@@ -1,0 +1,30 @@
+<html>
+<title>Dashboard Admin Login Page</title>
+<head>
+<script src='/js/jquery-3.3.1.js'></script>
+<script src='/js/login.js'></script>
+<link rel='stylesheet' type='text/css' href='/css/login.css'  />
+</head>
+
+<div class='background-wrap'>
+  <div class='background'></div>
+</div>
+
+<body>
+<form id='accesspanel' action='/login' method='POST'>
+  <h1 id='litheader'>DASHBOARD ADMIN</h1>
+  <div class='inset'>
+    <p>
+      <input type='text' name='user' id='user' placeholder='UserName'>
+    </p>
+    <p>
+      <input type='password' name='pass' id='pass' placeholder='Password'>
+    </p>
+    <input class='loginLoginValue' type='hidden' name='service' value='login' />
+  </div>
+  <p class='p-container'>
+    <input type='submit' name='Login' id='login' value='Login'>
+  </p>
+</form>
+  </body>
+</html>

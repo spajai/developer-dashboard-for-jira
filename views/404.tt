@@ -1,0 +1,14 @@
+<html>
+<title>PAGE NOT FOUND</title>
+<head> 
+<link rel='stylesheet' type='text/css' href='/css/error_page.css' />
+</head>
+
+<div class="overlay" ></div>
+<div class="terminal">
+  <h1>Error <span class="errorcode">404</span></h1>
+  <p class="output">The page you are looking for might have been removed, had its name changed or is temporarily unavailable</ü>
+  <p class="output">Goto  <a href="[% home %]">HOME</a></p>
+  <p class="output">Report <a href="mailto:[% email %]?Subject=Developer-Dashboard%20[Error-404]%20Reported">Click here to Report Bug/Issue/Incident</a></p>
+</div>
+</html>
