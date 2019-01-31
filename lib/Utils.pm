@@ -106,7 +106,7 @@ sub month_num_to_text {
         8  => 'Aug',
         9  => 'Sep',
         10 => 'Oct',
-        12 => 'Nov',
+        11 => 'Nov',
         12 => 'Dec',
     };
 
